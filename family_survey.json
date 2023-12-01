@@ -1,0 +1,294 @@
+{
+  "id": "1",
+  "version": 1,
+  "schema_version": 1,
+  "created_by": "2",
+  "updated_by": "3",
+  "created_at": "2023-01-24T10:17:08.450Z",
+  "updated_at": "2023-01-24T19:11:27.489Z",
+  "status": "active",
+  "title": "Family survey",
+  "description": "A family profile survey",
+  "container": "multi_page",
+  "blocks": [
+    {
+      "type": "group",
+      "id": "4",
+      "title": "Welcome!",
+      "container": "page",
+      "description": "This is a family survey",
+      "blocks": [
+        {
+          "type": "link",
+          "id": "5",
+          "title": "Start",
+          "icon": "add-outline",
+          "link": "survey-6",
+          "external": false
+        },
+        {
+          "type": "group",
+          "id": "49",
+          "title": "Deeper Welcome!",
+          "container": "page",
+          "description": "This is a family survey",
+          "blocks": [
+            {
+              "type": "link",
+              "id": "54",
+              "title": "deeper Start",
+              "icon": "add-outline",
+              "link": "survey-6",
+              "external": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "id": "7",
+      "title": "Survey",
+      "container": "page",
+      "blocks": [
+        {
+          "type": "record_link",
+          "id": "8",
+          "title": "Family ID",
+          "description": "Link the survey to a family profile.",
+          "data_name": "family_id",
+          "survey_id": "9",
+          "allow_creating_records": false,
+          "allow_existing_records": true,
+          "allow_updating_records": false,
+          "allow_multiple_records": false,
+          "style": "",
+          "icon": "people-outline",
+          "disabled": false,
+          "hidden": false,
+          "container": "inline",
+          "default_previous_value": false,
+          "validations": { "required": false }
+        },
+        {
+          "type": "choice_input",
+          "id": "10",
+          "title": "Country",
+          "description": "Family's country code.",
+          "data_name": "country",
+          "style": "",
+          "icon": "globe-outline",
+          "disabled": false,
+          "hidden": false,
+          "container": "page",
+          "default_previous_value": false,
+          "validations": { "required": false },
+          "multiple": false,
+          "choice_list_id": "remote-country-list-11"
+        },
+        {
+          "type": "geometry_input",
+          "id": "12",
+          "title": "Home location",
+          "description": "A location of where the family is based.",
+          "data_name": "location",
+          "allow_pin": true,
+          "allow_search": true,
+          "allow_locate": true,
+          "allow_line": false,
+          "allow_polygon": false,
+          "maps": [
+            {
+              "isDefault": true,
+              "title": "Map layer",
+              "style": "TODO"
+            }
+          ],
+          "style": "",
+          "icon": "pin-outline",
+          "disabled": false,
+          "hidden": false,
+          "container": "page",
+          "default_previous_value": false,
+          "validations": { "required": false }
+        },
+        {
+          "type": "file_input",
+          "id": "13",
+          "title": "File attachments",
+          "description": "Any other family related documents.",
+          "data_name": "files",
+          "style": "",
+          "icon": "add-outline",
+          "disabled": false,
+          "multiple": true,
+          "hidden": false,
+          "allow_annotations": false,
+          "container": "inline",
+          "default_previous_value": false,
+          "validations": { "required": false }
+        },
+        {
+          "type": "text_input",
+          "id": "14",
+          "title": "Comments",
+          "description": "Any extra information about the family.",
+          "data_name": "comments",
+          "style": "",
+          "icon": "clipboard-outline",
+          "trailing_icon": "",
+          "disabled": false,
+          "hidden": false,
+          "container": "page",
+          "appearance": "multiline",
+          "default_previous_value": false,
+          "prefix": "",
+          "suffix": "",
+          "validations": { "required": false },
+          "placeholder": "e.g. they often change their home address."
+        },
+        {
+          "type": "group",
+          "id": "15",
+          "title": "Member",
+          "container": "page",
+          "repeated": true,
+          "blocks": [
+            {
+              "type": "text_input",
+              "id": "16",
+              "title": "Person's name",
+              "description": "The person's name in the family.",
+              "data_name": "title",
+              "style": "bg-blue-100",
+              "icon": "people-outline",
+              "trailing_icon": "",
+              "disabled": false,
+              "hidden": false,
+              "container": "inline",
+              "default_previous_value": false,
+              "prefix": "",
+              "suffix": "",
+              "validations": { "required": false },
+              "placeholder": "e.g. Michael"
+            },
+            {
+              "type": "number_input",
+              "id": "17",
+              "title": "Age",
+              "description": "Person's age.",
+              "data_name": "age",
+              "style": "",
+              "icon": "clipboard-outline",
+              "trailing_icon": "",
+              "disabled": false,
+              "hidden": false,
+              "appearance": "slider",
+              "container": "inline",
+              "default_previous_value": false,
+              "prefix": "",
+              "suffix": "",
+              "validations": { "required": false },
+              "placeholder": "e.g. 17"
+            },
+            {
+              "type": "photo_input",
+              "id": "18",
+              "title": "Photo",
+              "description": "Person's photograph.",
+              "data_name": "photo",
+              "style": "",
+              "icon": "camera-outline",
+              "disabled": false,
+              "multiple": false,
+              "hidden": false,
+              "allow_annotations": true,
+              "container": "inline",
+              "default_previous_value": false,
+              "validations": { "required": false }
+            },
+            {
+              "type": "yes_no_input",
+              "id": "19",
+              "title": "Driving license",
+              "description": "Does the person have a driving license?",
+              "data_name": "driving_license",
+              "style": "",
+              "icon": "car-outline",
+              "disabled": false,
+              "hidden": false,
+              "appearance": "toggle",
+              "container": "inline",
+              "default_previous_value": false,
+              "validations": { "required": false },
+              "choices": [
+                { "id": "31", "title": "Yes", "data_name": "yes" },
+                { "id": "41", "title": "No", "data_name": "no" }
+              ],
+              "allow_neutral": false
+            },
+            {
+              "type": "choice_input",
+              "id": "20",
+              "title": "Role",
+              "description": "Family's role.",
+              "data_name": "role",
+              "style": "",
+              "icon": "person-outline",
+              "disabled": false,
+              "hidden": false,
+              "container": "page",
+              "default_previous_value": false,
+              "validations": { "required": false },
+              "multiple": false,
+              "choices": [
+                { "data_name": "parent", "title": "Child" },
+                { "data_name": "child", "title": "Parent" },
+                { "data_name": "other", "title": "Other" }
+              ]
+            },
+            {
+              "type": "choice_input",
+              "id": "24",
+              "title": "Games",
+              "description": "Favourite games.",
+              "data_name": "games",
+              "style": "",
+              "icon": "home-outline",
+              "disabled": false,
+              "hidden": false,
+              "container": "page",
+              "default_previous_value": false,
+              "validations": { "required": false },
+              "multiple": true,
+              "choices": [
+                { "id": "25", "data_name": "monopoly", "title": "Monopoly" },
+                { "id": "26", "data_name": "dnd", "title": "DnD" },
+                { "id": "27", "data_name": "dixit", "title": "Dixit" }
+              ]
+            },
+            {
+              "type": "geometry_input",
+              "id": "28",
+              "title": "Favourite trail",
+              "description": "A favourite walk.",
+              "data_name": "trail",
+              "allow_pin": false,
+              "allow_search": true,
+              "allow_locate": true,
+              "allow_line": true,
+              "allow_polygon": false,
+              "style": "",
+              "icon": "line-outline",
+              "disabled": false,
+              "hidden": false,
+              "container": "page",
+              "default_previous_value": false,
+              "validations": { "required": false }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
