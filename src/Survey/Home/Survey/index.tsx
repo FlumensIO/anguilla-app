@@ -1,4 +1,4 @@
-import { FC, useContext } from 'react';
+import { FC } from 'react';
 import { observer } from 'mobx-react';
 import { Trans as T } from 'react-i18next';
 import { useAlert, useToast } from '@flumens';
@@ -7,11 +7,9 @@ import {
   IonItemSliding,
   IonItemOptions,
   IonItemOption,
-  NavContext,
 } from '@ionic/react';
 import Record, { useValidateCheck } from 'models/record';
 import { useUserStatusCheck } from 'models/user';
-import { useSurveyBlockConfig } from 'Survey/Components/hooks';
 import OnlineStatus from './components/OnlineStatus';
 import './styles.scss';
 
@@ -55,18 +53,17 @@ type Props = {
 };
 
 const Survey: FC<Props> = ({ record, style }) => {
-  const { navigate } = useContext(NavContext);
   const toast = useToast();
   const deleteSurvey = useSurveyDeletePrompt(record);
   const checkSampleStatus = useValidateCheck(record);
   const checkUserStatus = useUserStatusCheck();
 
-  const survey = useSurveyBlockConfig();
+  const survey = record.getSurvey();
 
   const { synchronising } = record.remote;
 
   const href = !synchronising
-    ? `/survey/${survey.id}/record/${record.cid}`
+    ? `/survey/${survey.cid}/record/${record.cid}`
     : undefined;
 
   const deleteSurveyWrap = () => deleteSurvey();
@@ -82,12 +79,11 @@ const Survey: FC<Props> = ({ record, style }) => {
     if (!isValid) return;
 
     record.upload().catch(toast.error);
-    navigate(`/home/surveys`, 'root');
   };
 
   return (
     <IonItemSliding
-      className="max-w-[600px] rounded-[var(--theme-border-radius)] bg-[white]"
+      className="max-w-xl rounded-[var(--theme-border-radius)] bg-[white]"
       style={style}
     >
       <IonItem routerLink={href} detail={false} className="survey-list-item">

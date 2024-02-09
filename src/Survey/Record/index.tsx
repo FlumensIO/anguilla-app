@@ -1,68 +1,79 @@
-import Header from '@flumens/ionic/dist/components/Header';
-import Main from '@flumens/ionic/dist/components/Main';
-import Page from '@flumens/ionic/dist/components/Page';
-import { IonList } from '@ionic/react';
-import Survey, { Block as BlockT } from 'common/Survey.d';
-import Block from '../Components/Block';
-import { useSurveyBlockConfig, useRecord } from '../Components/hooks';
+import { useContext } from 'react';
+import { Header, Page, useToast } from '@flumens';
+import { NavContext } from '@ionic/react';
+import { useUserStatusCheck } from 'common/models/user';
+import { useValidateCheck } from 'models/record';
+import Main from 'Components/Main';
+import BlocksWithRoundedGroups from 'Survey/Components/BlocksWithRoundedGroups';
+import { useRecord } from '../hooks';
+import HeaderBand from './HeaderBand';
 import PrimaryHeaderButton from './PrimaryHeaderButton';
 
 const RecordHome = () => {
-  const surveyConfig = useSurveyBlockConfig();
+  const navigate = useContext(NavContext);
+  const toast = useToast();
   const record = useRecord();
+  const checkRecordStatus = useValidateCheck(record);
+  const checkUserStatus = useUserStatusCheck();
+
   if (!record) return null;
 
-  const { title } = surveyConfig as Survey;
+  const surveyConfig = record.getSurvey();
 
-  const onFinish = () => {
-    console.log('Finished', record);
+  const { title } = surveyConfig.attrs;
+
+  const _processSubmission = async () => {
+    const isUserOK = await checkUserStatus();
+    if (!isUserOK) return;
+
+    const isValid = checkRecordStatus();
+    if (!isValid) return;
+
+    record.upload().catch(toast.error);
+    navigate.goBack();
   };
 
-  const finishButton = (
+  const _processDraft = async () => {
+    const isValid = checkRecordStatus();
+    if (!isValid) return;
+
+    // eslint-disable-next-line no-param-reassign
+    record.metadata.saved = true;
+    record.save();
+
+    navigate.goBack();
+  };
+
+  const onFinish = async () =>
+    !record.metadata.saved ? _processDraft() : _processSubmission();
+
+  const finishButton = record.isUploaded() ? null : (
     <PrimaryHeaderButton record={record} onClick={onFinish} />
   );
 
-  const surveyBlocks = (surveyConfig as Survey).blocks;
+  const { training } = record.attrs;
 
-  const blocks: any = [];
-  let roundedGroup: null | any[] = null;
-  const processBlockElement = (block: BlockT, index: number) => {
-    const blockItem = <Block key={block.id} block={block} />;
+  const subheader = !!training && <HeaderBand>Training Mode</HeaderBand>;
 
-    if (index === 0 && block.type !== 'group') {
-      roundedGroup = [blockItem];
-      return;
-    }
-
-    if (block.type === 'group' && roundedGroup) {
-      blocks.push(
-        <IonList key={block.id + index}>
-          <div className="rounded">{roundedGroup}</div>
-        </IonList>
-      );
-      roundedGroup = null;
-      blocks.push(blockItem);
-      return;
-    }
-
-    if (!roundedGroup) roundedGroup = [];
-    roundedGroup.push(blockItem);
-
-    if (surveyBlocks.length === index + 1 && block.type !== 'group') {
-      blocks.push(
-        <IonList key={block.id + index}>
-          <div className="rounded">{roundedGroup}</div>
-        </IonList>
-      );
-    }
-  };
-
-  surveyBlocks.forEach(processBlockElement);
+  const disabled = record.isUploaded();
 
   return (
     <Page id="record-home">
-      <Header title={title} rightSlot={finishButton} />
-      <Main>{blocks}</Main>
+      <Header title={title} rightSlot={finishButton} subheader={subheader} />
+      <Main>
+        {disabled && (
+          <div className="content-group mb-5 rounded-md bg-tertiary-50/30 px-4 py-3 text-tertiary-900">
+            This record has been submitted and cannot be edited within this app.
+          </div>
+        )}
+
+        <BlocksWithRoundedGroups
+          surveyBlocks={surveyConfig.attrs.blocks}
+          record={record?.attrs}
+          recordId={record?.cid}
+          isDisabled={disabled}
+        />
+      </Main>
     </Page>
   );
 };

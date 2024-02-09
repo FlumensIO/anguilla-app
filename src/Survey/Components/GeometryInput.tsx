@@ -12,7 +12,8 @@ import config from 'common/config';
 
 const getInitialView = (
   location: Location,
-  parentLocation?: Location
+  parentLocation?: Location,
+  initialViewState?: Partial<ViewState>
 ): Partial<ViewState> => {
   if (isValidLocation(location))
     return {
@@ -36,12 +37,26 @@ const getInitialView = (
     };
   }
 
-  return {};
+  return initialViewState || {};
 };
 
-type Props = { location: Location; onChange: any };
+type Props = {
+  location: Location;
+  onChange: any;
+  isLocating?: boolean;
+  onLocate?: any;
+  style?: string;
+  initialViewState?: Partial<ViewState>;
+};
 
-const GeometryInput = ({ location, onChange }: Props) => {
+const GeometryInput = ({
+  isLocating,
+  onLocate,
+  location,
+  onChange,
+  style,
+  initialViewState,
+}: Props) => {
   const [mapRef, setMapRef] = useState<MapRef>();
   const flyToLocation = () => {
     mapFlyToLocation(mapRef, isValidLocation(location) ? location : undefined);
@@ -56,21 +71,25 @@ const GeometryInput = ({ location, onChange }: Props) => {
   const onMapClick = (e: any) => onChange(mapEventToLocation(e));
 
   return (
-    <MapContainer
-      onReady={setMapRef}
-      onClick={onMapClick}
-      accessToken={config.map.mapboxApiKey}
-      maxPitch={0}
-      initialViewState={getInitialView(location)}
-      mapStyle="mapbox://styles/mapbox/satellite-streets-v11"
-    >
-      {/* <MapContainer.Control.Geolocate
-        isLocating={isLocating}
-        onClick={onGPSClick}
-      /> */}
+    <div className="geometry-input-block block h-full w-full">
+      <MapContainer
+        onReady={setMapRef}
+        onClick={onMapClick}
+        accessToken={config.map.mapboxApiKey}
+        maxPitch={0}
+        initialViewState={getInitialView(location, undefined, initialViewState)}
+        mapStyle={style}
+      >
+        {!!onLocate && (
+          <MapContainer.Control.Geolocate
+            isLocating={isLocating}
+            onClick={onLocate}
+          />
+        )}
 
-      <MapContainer.Marker {...location} />
-    </MapContainer>
+        <MapContainer.Marker {...location} />
+      </MapContainer>
+    </div>
   );
 };
 

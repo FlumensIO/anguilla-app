@@ -1,72 +1,32 @@
 import { Route } from 'react-router';
+import { getBlockRoutes } from '@flumens/tailwind/dist/components/Block/utils';
 import { IonPage, IonRouterOutlet } from '@ionic/react';
-import { Block } from 'common/Survey.d';
-import { Survey } from 'common/surveys';
-import BlockPage from './Components/Block/Page';
-import { useSurveyBlockConfig } from './Components/hooks';
 import Home from './Home';
+import BlockPage from './Page';
 import RecordHome from './Record';
-import StartNewRecord from './StartNewRecord';
-
-const exists = (obj: any) => !!obj;
-
-const getBlockRoute =
-  (basePath: string) =>
-  // eslint-disable-next-line @getify/proper-arrows/name
-  (block: Block) => {
-    const normalizedBlockId = encodeURIComponent(block.id);
-    let path = `${basePath}/${normalizedBlockId}`;
-    const routes: any = [];
-
-    if (block.container === 'page') {
-      if (block.type === 'group' && block.repeated) {
-        path = `${basePath}/${normalizedBlockId}\\(:${normalizedBlockId}\\)`;
-      }
-
-      routes.push(<Route key={path} path={path} component={BlockPage} exact />);
-    }
-
-    if (block.type === 'group' && block.blocks) {
-      const nestedRoutes = block.blocks
-        .flatMap(getBlockRoute(path))
-        .filter(exists);
-      routes.push(...nestedRoutes);
-    }
-
-    return routes;
-  };
-
-const getBlockRoutes = (surveyConfig: Survey) => {
-  const basePath = '/survey/:surveyId/record/:recordId/blocks';
-  const blockRoutes = surveyConfig?.blocks
-    .flatMap(getBlockRoute(basePath))
-    .filter(exists);
-
-  return blockRoutes;
-};
+import { useSurveyConfig } from './hooks';
 
 const Renderer = () => {
-  const surveyConfig = useSurveyBlockConfig();
-  const blockRoutes = getBlockRoutes(surveyConfig as any);
+  const surveyConfig = useSurveyConfig();
+  const basePath = '/survey/:surveyCID/record/:recordId/blocks';
+  const blockRoutes = getBlockRoutes(basePath, surveyConfig.attrs as any).map(
+    (path: string) => (
+      <Route key={path} path={path} component={BlockPage} exact />
+    )
+  );
 
   return (
     <IonPage>
       <IonRouterOutlet id="surveys">
         <Route
-          key="/survey/:surveyId"
-          path="/survey/:surveyId"
+          key="/survey/:surveyCID"
+          path="/survey/:surveyCID"
           component={Home}
           exact
         />
         <Route
-          key="/survey/:surveyId/record"
-          path="/survey/:surveyId/record"
-          component={StartNewRecord}
-          exact
-        />
-        <Route
-          key="/survey/:surveyId/record/:recordId"
-          path="/survey/:surveyId/record/:recordId"
+          key="/survey/:surveyCID/record/:recordId"
+          path="/survey/:surveyCID/record/:recordId"
           component={RecordHome}
           exact
         />

@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 import { add, addOutline } from 'ionicons/icons';
 import { useRouteMatch, useLocation } from 'react-router';
 import {
   Header,
   InfoBackgroundMessage,
-  Main,
   Page,
   date as DateHelp,
+  Main,
 } from '@flumens';
 import {
   IonBadge,
@@ -19,10 +19,11 @@ import {
   IonList,
   IonSegment,
   IonSegmentButton,
+  NavContext,
 } from '@ionic/react';
 import Record from 'models/record';
-import records, { bySurvey } from 'models/records';
-import { useSurveyBlockConfig } from 'Survey/Components/hooks';
+import records, { bySurveyId } from 'models/records';
+import { useSurveyConfig } from 'Survey/hooks';
 import Survey from './Survey';
 import VirtualList from './VirtualList';
 import './styles.scss';
@@ -100,9 +101,16 @@ const getRecords = (items: Record[]) => {
 const Home = () => {
   const match = useRouteMatch();
   const location = useLocation();
-  const surveyConfig = useSurveyBlockConfig();
+  const surveyConfig = useSurveyConfig();
+  const context = useContext(NavContext);
 
-  const newRecordPath = `${match.url}/record`;
+  const createNewRecord = async () => {
+    const model = Record.fromSurvey(surveyConfig);
+    await model.save();
+
+    records.push(model);
+    context.navigate(`${match.url}/record/${model.cid}`);
+  };
 
   const initSegment = 'pending';
   const [segment, setSegment] = useState(initSegment);
@@ -136,7 +144,7 @@ const Home = () => {
     }
 
     return records
-      .filter(bySurvey(surveyConfig.id))
+      .filter(bySurveyId(surveyConfig.id))
       .filter(byUploadStatus)
       .sort(bySurveyDate);
   };
@@ -148,10 +156,7 @@ const Home = () => {
 
     if (!surveys.length) {
       return (
-        <InfoBackgroundMessageWithLink
-          routerLink={newRecordPath}
-          detail={false}
-        >
+        <InfoBackgroundMessageWithLink onClick={createNewRecord} detail={false}>
           <div>
             You have no finished surveys. Press <IonIcon icon={addOutline} /> to
             start one.
@@ -210,32 +215,34 @@ const Home = () => {
 
   return (
     <Page id="survey-home">
-      <Header title={surveyConfig.title || `Survey`} />
+      <Header title={surveyConfig.attrs.title || `Survey`} />
       <Main>
-        <IonSegment onIonChange={onSegmentClick} value={segment}>
-          <IonSegmentButton value="pending">
-            <IonLabel className="ion-text-wrap">
-              Pending
-              {getPendingSurveysCount()}
-            </IonLabel>
-          </IonSegmentButton>
+        <div className="mx-auto h-full max-w-xl bg-[var(--ion-content-background)] px-[4%] py-3">
+          <IonSegment onIonChange={onSegmentClick} value={segment}>
+            <IonSegmentButton value="pending">
+              <IonLabel className="ion-text-wrap">
+                Pending
+                {getPendingSurveysCount()}
+              </IonLabel>
+            </IonSegmentButton>
 
-          <IonSegmentButton value="uploaded">
-            <IonLabel className="ion-text-wrap">
-              Uploaded
-              {getUploadedSurveysCount()}
-            </IonLabel>
-          </IonSegmentButton>
-        </IonSegment>
+            <IonSegmentButton value="uploaded">
+              <IonLabel className="ion-text-wrap">
+                Uploaded
+                {getUploadedSurveysCount()}
+              </IonLabel>
+            </IonSegmentButton>
+          </IonSegment>
 
-        <IonFab slot="fixed" horizontal="end" vertical="bottom">
-          <IonFabButton routerLink={newRecordPath} color="secondary">
-            <IonIcon icon={add} />
-          </IonFabButton>
-        </IonFab>
+          <IonFab slot="fixed" horizontal="end" vertical="bottom">
+            <IonFabButton onClick={createNewRecord} color="secondary">
+              <IonIcon icon={add} />
+            </IonFabButton>
+          </IonFab>
 
-        {showingPending && <IonList>{getPendingSurveys()}</IonList>}
-        {showingUploaded && <IonList>{getUploadedSurveys()}</IonList>}
+          {showingPending && <IonList>{getPendingSurveys()}</IonList>}
+          {showingUploaded && <IonList>{getUploadedSurveys()}</IonList>}
+        </div>
       </Main>
     </Page>
   );

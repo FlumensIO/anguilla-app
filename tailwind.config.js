@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const { parseColor } = require('tailwindcss/lib/util/color'); // eslint-disable-line import/no-extraneous-dependencies
+const colors = require('tailwindcss/colors');
 
 /* Converts HEX color to RGB */
 const toRGB = value => parseColor(value)?.color?.join(', ');
@@ -25,9 +26,10 @@ function exposeColorsAsCssVariables({ addBase, theme }) {
           : `--color${colorGroup}-${colorKey}`;
 
       const rgb = toRGB(value);
-      const rgbVars = {
-        [`${cssVariable}-rbg`]: isCustomGroup(colorGroup) ? rgb : null,
-      };
+
+      const rgbVars = isCustomGroup(colorGroup)
+        ? { [`${cssVariable}-rgb`]: rgb }
+        : {};
 
       const newVars =
         typeof value === 'string'
@@ -47,7 +49,10 @@ function exposeColorsAsCssVariables({ addBase, theme }) {
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/**/*.{ts,tsx}'],
+  content: [
+    './src/**/*.{ts,tsx}',
+    'node_modules/@flumens/tailwind/dist/**/*.{js,ts,jsx,tsx}',
+  ],
   theme: {
     extend: {
       colors: {
@@ -83,21 +88,7 @@ module.exports = {
           950: '#170E00',
         },
 
-        tertiary: {
-          // https://www.tailwindshades.com/#color=203.89830508474577%2C100%2C46.27450980392157&step-up=9&step-down=12&hue-shift=0&name=azure-radiance&base-stop=6&v=1&overrides=e30%3D
-          DEFAULT: '#008EEC',
-          50: '#E9F6FF',
-          100: '#D3EDFF',
-          200: '#A5DBFF',
-          300: '#77C9FF',
-          400: '#49B6FF',
-          500: '#1BA4FF',
-          600: '#008EEC',
-          700: '#0069AF',
-          800: '#004472',
-          900: '#002034',
-          950: '#000D16',
-        },
+        tertiary: colors.sky,
 
         success: {
           // https://www.tailwindshades.com/#color=128.25396825396825%2C100%2C32&step-up=8&step-down=11&hue-shift=0&name=fun-green&base-stop=7&v=1&overrides=e30%3D

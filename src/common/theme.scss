@@ -1,8 +1,6 @@
 @import '@ionic/core/css/core.css';
 @import '@ionic/core/css/ionic.bundle.css';
 
-@import '@flumens/ionic/dist/themes/rounded.css';
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -71,25 +69,39 @@
   --ion-color-dark-shade: var(--color-slate-950);
   --ion-color-dark-tint: var(--color-slate-800);
 
-  --ion-color-medium: var(--color-slate-400);
+  --ion-color-medium: var(--color-slate-500);
   --ion-color-medium-contrast: var(--color-slate-50);
-  --ion-color-medium-shade: var(--color-slate-500);
-  --ion-color-medium-tint: var(--color-slate-300);
+  --ion-color-medium-shade: var(--color-slate-600);
+  --ion-color-medium-tint: var(--color-slate-400);
 
   --ion-color-light: var(--color-white);
   --ion-color-light-contrast: var(--color-slate-950);
   --ion-color-light-shade: var(--color-slate-200);
   --ion-color-light-tint: var(--color-slate-50);
 
-  --ion-page-background: var(--color-slate-50);
+  --ion-page-background: #e6ecf1;
+  --ion-content-background: var(--color-slate-50);
   --ion-item-background: var(--color-white);
 
   --ion-headings-font-weight: 300;
-  --ion-item-border-color: rgb(0, 0, 0, 0.2);
+  --ion-item-border-color: rgba(var(--color-primary-300-rgb), 0.2);
 
   --ion-toolbar-background: var(--ion-color-primary);
   --ion-toolbar-color: var(--color-white);
   --ion-toolbar-color-activated: var(--color-white);
+
+  --form-value-color: var(--color-tertiary-800);
+}
+
+/* app background */
+body {
+  background-color: var(--ion-page-background);
+
+  --theme-border-radius: 10px;
+
+  ion-content {
+    --background: var(--ion-page-background);
+  }
 }
 
 // add safe padding for devices with a notch
@@ -114,20 +126,28 @@ ion-button[expand='block'] {
 
 // brighter and bigger divider
 ion-item-divider {
-  font-size: 0.9em;
-  color: var(--ion-text-color);
-  padding: 0 5px 7px 5px;
   font-weight: 500;
 }
 
-// ACCESSIBILITY IMPROVEMENTS START
-ion-button:not(.button-has-icon-only),
-ion-item {
-  font-size: 1em;
-  &.md {
-    font-size: 0.9em;
-  }
+/* info background message style */
+.info-background-message {
+  --border-radius: var(--theme-border-radius);
+  box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.05),
+    0 2px 9px 0 rgba(62, 57, 107, 0.05);
 }
+
+/* increased toolbar size */
+ion-toolbar {
+  --min-height: 54px;
+}
+
+/* section style */
+.apps-section {
+  border-radius: var(--theme-border-radius);
+}
+
+// ACCESSIBILITY IMPROVEMENTS START
+
 // clearer image picker empty message
 .photo-picker {
   &.ios .empty {
@@ -175,17 +195,14 @@ ion-item-divider {
   }
   ion-label[slot='end'] {
     opacity: 1 !important;
-    color: #000000b3;
-
-    &.ios {
-      font-size: 0.9em;
-    }
+    color: rgba(0, 0, 0, 0.702);
+    font-size: 17px;
   }
 }
 
 // larger collapse headers
 .collapse-block ion-label.ion-text-wrap {
-  font-size: 0.9em;
+  font-size: 17px;
 }
 
 // larger radio inputs
@@ -199,7 +216,7 @@ ion-alert div.alert-message.sc-ion-alert-md {
   font-size: 1.1em;
 }
 
-// subtle borders around rounded items
+// subtle borders around content-group items
 .search-result:nth-child(odd),
 .survey-list-item,
 .slider-input-attr,
@@ -207,13 +224,74 @@ ion-alert div.alert-message.sc-ion-alert-md {
 .radio-input-attr ion-item,
 #suggestions .empty,
 .taxa-filter-edit-dialog-form ion-item,
-.rounded:not(:empty) {
-  border: 1px solid rgba(var(--color-primary-800-rgb), 0.2);
+.content-group:not(:empty) {
+  border: 1px solid rgba(var(--color-primary-300-rgb), 0.2);
   border-radius: var(--theme-border-radius);
 }
 
 // ACCESSIBILITY IMPROVEMENTS END
 
-ion-list {
-  width: 100%;
+.md,
+.ios {
+  ion-list {
+    padding: 0;
+  }
+  ion-list,
+  ion-item-divider {
+    background: transparent;
+  }
+  ion-content > ion-list,
+  ion-list > ion-item-divider {
+    margin-top: 10px;
+  }
+}
+
+.content-group > *:first-child,
+.block:not(.geometry-input-block):first-child {
+  --border-radius: var(--theme-border-radius) var(--theme-border-radius) 0 0;
+  border-radius: var(--theme-border-radius) var(--theme-border-radius) 0 0;
+  overflow: hidden;
+}
+.content-group > *:last-child,
+.block:not(.geometry-input-block):last-child {
+  --border-radius: 0 0 var(--theme-border-radius) var(--theme-border-radius);
+  border-radius: 0 0 var(--theme-border-radius) var(--theme-border-radius);
+  --border-style: none;
+}
+.content-group > *:only-child,
+.block:not(.geometry-input-block):only-child {
+  --border-radius: var(--theme-border-radius) var(--theme-border-radius);
+  border-radius: var(--theme-border-radius) var(--theme-border-radius);
+  --border-style: none;
+
+  & > ion-item:last-of-type {
+    --border-style: none;
+  }
+}
+
+.checkbox-input-attr ion-item,
+ion-radio-group ion-item {
+  --border-style: none;
+  --border-radius: var(--theme-border-radius);
+  border-radius: var(--theme-border-radius);
+  margin: 10px;
+
+  ion-radio.md {
+    margin-right: 1px; // fix android rounded icon cropping
+  }
+}
+
+.text-input-block input {
+  text-align: right;
+}
+
+// Change form value text colours
+// TODO: remove once all components migrated to tailwind
+.date-input-attr
+  ion-accordion:last-of-type
+  ion-item[slot='header']
+  ion-label[slot='end'],
+.counter-input-attr-item div[slot='end'] input[type='number'] {
+  opacity: 1 !important;
+  color: var(--form-value-color);
 }

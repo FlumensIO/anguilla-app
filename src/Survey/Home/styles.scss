@@ -1,9 +1,5 @@
 #survey-home {
   ion-segment {
-    max-width: calc(
-      100% - 20px
-    ); // -20px to match the padding of the list below
-    margin: 8px auto;
     z-index: 100000000;
     border-radius: var(--theme-border-radius);
     background: #fff;
@@ -39,7 +35,6 @@
       height: 100%;
       width: calc(100% - 20px);
       padding: 0 !important;
-      max-width: 600px; // ipad
       margin: 0 auto;
     }
 

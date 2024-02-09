@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react';
 import { Trans as T } from 'react-i18next';
 import { IonButton } from '@ionic/react';
 import Record from 'models/record';
@@ -11,20 +12,13 @@ const PrimaryHeaderButton = ({ record, onClick }: Props) => {
   const isDisabled = record.isUploaded();
   if (isDisabled) return null;
 
-  const isValid = false;
-  // const isValid = !record.validateRemote();
+  const isValid = !record.validateRemote();
 
   return (
     <IonButton
       onClick={onClick}
-      color={isValid ? 'primary' : 'medium'}
-      // ion-button.primary-header-button {
-      //   --padding-end: 20px;
-      //   --padding-start: 20px;
-      //   --background: var(--ion-color-primary);
-      //   --border-radius: var(--theme-border-radius) !important;
-      // }
-
+      color={isValid ? 'secondary' : 'medium'}
+      className="![--padding-end:20px] ![--padding-start:20px] ![--border-radius:var(--theme-border-radius)]"
       fill="solid"
     >
       {record.metadata.saved ? <T>Upload</T> : <T>Finish</T>}
@@ -32,4 +26,4 @@ const PrimaryHeaderButton = ({ record, onClick }: Props) => {
   );
 };
 
-export default PrimaryHeaderButton;
+export default observer(PrimaryHeaderButton);

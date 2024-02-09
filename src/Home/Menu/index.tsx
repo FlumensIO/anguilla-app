@@ -1,8 +1,9 @@
 import { FC } from 'react';
 import { observer } from 'mobx-react';
 import { Trans as T } from 'react-i18next';
-import { Page, useAlert, useLoader, useToast } from '@flumens';
+import { Page, PickByType, useAlert, useLoader, useToast } from '@flumens';
 import { IonHeader, IonTitle, IonToolbar } from '@ionic/react';
+import appModel, { Attrs } from 'models/app';
 import userModel from 'models/user';
 import Main from './Main';
 import './styles.scss';
@@ -34,10 +35,21 @@ function showLogoutConfirmationDialog(callback: any, alert: any) {
   });
 }
 
+const onToggle = (
+  setting: keyof PickByType<Attrs, boolean>,
+  checked: boolean
+) => {
+  console.log('Settings:Menu:Controller: setting toggled.');
+  appModel.attrs[setting] = checked; // eslint-disable-line no-param-reassign
+  appModel.save();
+};
+
 const Controller: FC = ({ ...restProps }) => {
   const alert = useAlert();
   const loader = useLoader();
   const toast = useToast();
+
+  const { useTraining } = appModel.attrs;
 
   function logOut() {
     console.log('Info:Menu: logging out.');
@@ -79,7 +91,7 @@ const Controller: FC = ({ ...restProps }) => {
     <Page id="info-menu">
       <IonHeader className="ion-no-border">
         <IonToolbar>
-          <IonTitle>Menu</IonTitle>
+          <IonTitle>Anguilla App</IonTitle>
         </IonToolbar>
       </IonHeader>
 
@@ -89,6 +101,8 @@ const Controller: FC = ({ ...restProps }) => {
         logOut={logOut}
         refreshAccount={checkActivation}
         resendVerificationEmail={resendVerificationEmail}
+        useTraining={useTraining}
+        onToggle={onToggle}
         {...restProps}
       />
     </Page>

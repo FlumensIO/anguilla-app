@@ -1,3 +1,4 @@
+/* eslint-disable @getify/proper-arrows/name */
 import { configure as mobxConfig } from 'mobx';
 import i18n from 'i18next';
 import { createRoot } from 'react-dom/client';
@@ -6,9 +7,17 @@ import { App as AppPlugin } from '@capacitor/app';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { StatusBar, Style as StatusBarStyle } from '@capacitor/status-bar';
 import { setupIonicReact, isPlatform } from '@ionic/react';
+import 'common/images/favicon.ico?originalName';
+import 'common/images/logo192.png?originalName';
+import 'common/images/logo512.png?originalName';
+import lists from 'common/models/lists';
+import records from 'common/models/records';
+import surveys from 'common/models/surveys';
+import userModel from 'common/models/user';
 import 'common/theme.scss';
 import appModel from 'models/app';
 import App from './App';
+import './manifest.json';
 
 console.log('🚩 App starting.'); // eslint-disable-line
 
@@ -22,6 +31,10 @@ setupIonicReact({
 
 async function init() {
   await appModel.ready;
+  await userModel.ready;
+  await surveys.ready;
+  await lists.ready;
+  await records.ready;
 
   // appModel.attrs.sendAnalytics &&
   //   initAnalytics({
@@ -52,3 +65,15 @@ async function init() {
 }
 
 init();
+
+if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator)
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/service-worker.js')
+      .then(registration => {
+        console.log('SW registered: ', registration);
+      })
+      .catch(registrationError => {
+        console.log('SW registration failed: ', registrationError);
+      });
+  });

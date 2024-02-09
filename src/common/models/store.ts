@@ -15,6 +15,18 @@ export const modelStore = new Store({
   debugging: isDemo,
 });
 
+// eslint-disable-next-line
+export const surveysStore = new Store({
+  storeName: 'surveys',
+  debugging: isDemo,
+});
+
+// eslint-disable-next-line
+export const listsStore = new Store({
+  storeName: 'list',
+  debugging: isDemo,
+});
+
 if (isDemo) {
-  Object.assign(window, { genericStore, modelStore });
+  Object.assign(window, { genericStore, modelStore, surveysStore, listsStore });
 }

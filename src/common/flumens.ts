@@ -10,6 +10,7 @@ export * from '@flumens/ionic/dist/utils/image';
 export { default as DateTimeInput } from '@flumens/ionic/dist/components/DatetimeInput';
 export { default as MenuAttrItem } from '@flumens/ionic/dist/components/MenuAttrItem';
 export { default as PhotoPicker } from '@flumens/ionic/dist/components/PhotoPicker';
+export { default as MenuAttrToggle } from '@flumens/ionic/dist/components/MenuAttrToggle';
 export { default as Section } from '@flumens/ionic/dist/components/Section';
 export { default as InputWithValidation } from '@flumens/ionic/dist/components/InputWithValidation';
 export { default as InfoMessage } from '@flumens/ionic/dist/components/InfoMessage';
@@ -17,6 +18,7 @@ export { default as InfoBackgroundMessage } from '@flumens/ionic/dist/components
 export { default as device } from '@flumens/ionic/dist/utils/device';
 export { default as getNewUUID } from '@flumens/ionic/dist/utils/uuid';
 export { useToast, useAlert, useLoader } from '@flumens/ionic/dist/hooks';
+export * from '@flumens/ionic/dist/utils/errors';
 export { default as initAnalytics } from '@flumens/ionic/dist/utils/analytics';
 export {
   default as Model,
@@ -26,6 +28,7 @@ export {
 } from '@flumens/ionic/dist/models/Model';
 export { default as Store } from '@flumens/ionic/dist/models/Store';
 export { default as Media } from '@flumens/ionic/dist/models/Indicia/Media';
+export * from '@flumens/ionic/dist/models/Indicia/helpers';
 export { default as Attr } from '@flumens/ionic/dist/components/Attr';
 export { default as initStoredSamples } from '@flumens/ionic/dist/models/initStoredSamples';
 export * from '@flumens/ionic/dist/utils/location';
@@ -40,4 +43,6 @@ export {
   type Attrs as DrupalUserModelAttrs,
 } from '@flumens/ionic/dist/models/DrupalUserModel';
 export { default as date } from '@flumens/ionic/dist/utils/date';
+export * from '@flumens/ionic/dist/utils/type';
 export { default as ModelValidationMessage } from '@flumens/ionic/dist/components/ModelValidationMessage';
+export { default as CounterInput } from '@flumens/ionic/dist/components/CounterInput';

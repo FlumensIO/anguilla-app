@@ -9,9 +9,10 @@ import {
 } from 'ionicons/icons';
 import { Trans as T } from 'react-i18next';
 import { AnySchema } from 'yup';
-import { Main, InputWithValidation } from '@flumens';
+import { InputWithValidation } from '@flumens';
 import { IonIcon, IonButton, IonList, IonRouterLink } from '@ionic/react';
 import config from 'common/config';
+import Main from 'Components/Main';
 
 type Props = {
   onSubmit: any;
@@ -26,7 +27,7 @@ const RegisterMain: FC<Props> = ({ onSubmit, schema }) => {
   const registrationForm = (props: any) => (
     <Form>
       <IonList lines="full">
-        <div className="rounded">
+        <div className="content-group">
           <InputWithValidation
             name="firstName"
             placeholder="First name"

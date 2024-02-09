@@ -4,7 +4,8 @@ import {
 } from '@capacitor/filesystem';
 import { isPlatform } from '@ionic/core';
 
-const backendUrl = process.env.APP_BACKEND_URL || 'https://TODO:';
+const backendUrl =
+  process.env.APP_BACKEND_URL || 'https://live-brc-anguilla.pantheonsite.io';
 
 const indiciaUrl =
   process.env.APP_BACKEND_INDICIA_URL || 'https://warehouse1.indicia.org.uk';

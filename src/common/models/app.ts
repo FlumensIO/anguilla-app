@@ -4,11 +4,13 @@ import { genericStore } from './store';
 export interface Attrs extends ModelAttrs {
   appSession: number;
   sendAnalytics: boolean;
+  useTraining: boolean;
 }
 
 const defaults: Attrs = {
   sendAnalytics: true,
   appSession: 0,
+  useTraining: false,
 };
 
 class AppModel extends Model {

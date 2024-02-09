@@ -3,8 +3,9 @@ import { Formik, Form } from 'formik';
 import { personOutline } from 'ionicons/icons';
 import { Trans as T } from 'react-i18next';
 import { AnySchema } from 'yup';
-import { Main, InputWithValidation } from '@flumens';
+import { InputWithValidation } from '@flumens';
 import { IonButton, IonList } from '@ionic/react';
+import Main from 'Components/Main';
 
 type Props = {
   onSubmit: any;
@@ -15,7 +16,7 @@ const ResetMain: FC<Props> = ({ onSubmit, schema }) => {
   const resetForm = (props: any) => (
     <Form>
       <IonList lines="full">
-        <div className="rounded">
+        <div className="content-group">
           <InputWithValidation
             name="email"
             placeholder="Email"

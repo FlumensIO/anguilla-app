@@ -9,8 +9,9 @@ import {
 import { Trans as T } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { AnySchema } from 'yup';
-import { Main, InputWithValidation } from '@flumens';
+import { InputWithValidation } from '@flumens';
 import { IonIcon, IonButton, IonList } from '@ionic/react';
+import Main from 'Components/Main';
 
 type Props = {
   schema: AnySchema;
@@ -25,7 +26,7 @@ const LoginMain: FC<Props> = ({ schema, onSubmit }) => {
   const loginForm = (props: any) => (
     <Form>
       <IonList lines="full">
-        <div className="rounded">
+        <div className="content-group">
           <InputWithValidation
             name="email"
             placeholder="Email"

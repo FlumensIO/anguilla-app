@@ -8,9 +8,9 @@ type Collection = Record[] & {
 };
 
 // eslint-disable-next-line @getify/proper-arrows/name
-export const bySurvey = (id: number | string) => (record: Record) =>
-  `${record.metadata.survey}` === `${id}`;
+export const bySurveyId = (id: number | string) => (record: Record) =>
+  `${record.metadata.survey_id}` === `${id}`;
 
-const savedRecords: Collection = initStoredSamples(modelStore, Record);
+const records: Collection = initStoredSamples(modelStore, Record);
 
-export default savedRecords;
+export default records;
