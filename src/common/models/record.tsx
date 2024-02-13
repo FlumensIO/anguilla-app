@@ -24,7 +24,7 @@ import {
   getAutoLocateBlocks,
 } from '@flumens/tailwind/dist/components/Block/utils';
 import config from 'common/config';
-import { locateAndSetValue, stopLocate } from 'common/helpers/GPS';
+import geolocation from 'common/helpers/GPS';
 import Survey, { Attrs as SurveyAttrs } from 'models/survey';
 import surveys from 'models/surveys';
 import appModel from './app';
@@ -124,12 +124,18 @@ export default class Record extends Model {
       metadata: { survey: surveyConfig.cid, survey_id: surveyConfig.id },
     });
 
-    const autolocateBlocks = getAutoLocateBlocks(surveyConfig.attrs.blocks);
-    // eslint-disable-next-line @getify/proper-arrows/name
-    autolocateBlocks.forEach(async (block: GeometryInput) => {
+    const setLocation = async (block: GeometryInput) => {
       await record.ready; // the record won't be auto-saved until it is ready, if we skip it then the new location won't be permanent
-      locateAndSetValue(record.cid, record.attrs, block);
-    });
+      const onChange = (value: any) => {
+        (record.attrs as any)[block.id] = value;
+        record.save();
+        return null;
+      };
+      geolocation.locateAndSetValue(record.cid, onChange, block);
+    };
+
+    const autolocateBlocks = getAutoLocateBlocks(surveyConfig.attrs.blocks);
+    autolocateBlocks.forEach(setLocation);
 
     setDefaultBlockValues(record.attrs, surveyConfig.attrs.blocks);
 
@@ -461,7 +467,7 @@ export default class Record extends Model {
 
     // eslint-disable-next-line @getify/proper-arrows/name
     autolocateBlocks.forEach((autolocateBlock: Block) =>
-      stopLocate(this.cid + autolocateBlock.id)
+      geolocation.stopLocate(this.cid + autolocateBlock.id)
     );
 
     await super.destroy();
