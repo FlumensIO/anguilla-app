@@ -24,7 +24,7 @@ const getCustomAttribute = (control: Control): Block | null => {
       id: control.field_name,
       title: control.label,
       appearance: 'multiline',
-      container: 'page',
+      description: control.help_text,
       validations: { required: control.validation?.required },
     };
   }
@@ -35,6 +35,7 @@ const getCustomAttribute = (control: Control): Block | null => {
       id: control.field_name,
       title: control.label,
       container: 'inline',
+      description: control.help_text,
       validations: { required: control.validation?.required },
     };
   }
@@ -46,6 +47,8 @@ const getCustomAttribute = (control: Control): Block | null => {
       title: control.label,
       appearance: 'counter',
       container: 'inline',
+      description: control.help_text,
+      placeholder: '0',
       validations: {
         required: control.validation?.required,
         min: Number.parseInt(control.validation?.min || '', 10) || undefined,
@@ -56,16 +59,21 @@ const getCustomAttribute = (control: Control): Block | null => {
 
   if (
     control.control_type === 'radio_group' ||
+    control.control_type === 'checkbox_group' ||
     control.control_type === 'select'
   ) {
     const getOption = (term: any) => ({ data_name: term.id, title: term.term });
+
+    const multiple = control.control_type === 'checkbox_group';
 
     const block: ChoiceInput = {
       type: 'choice_input',
       id: control.field_name,
       title: control.label,
-      container: 'inline',
-      appearance: 'button',
+      container: multiple ? 'page' : 'inline',
+      appearance: multiple ? 'list' : 'button',
+      multiple,
+      description: control.help_text,
       choices: control.terms.map(getOption),
       validations: { required: control.validation?.required },
     };
@@ -78,6 +86,7 @@ const getCustomAttribute = (control: Control): Block | null => {
       type: 'yes_no_input',
       id: control.field_name,
       title: control.label,
+      description: control.help_text,
       appearance: 'toggle',
     };
   }
@@ -96,6 +105,7 @@ const getProcessedBlock = (
       id: control.field_name,
       title: control.label,
       default_value: 'now',
+      description: control.help_text,
       validations: {
         required: true,
         noFutureValues: !control?.validation?.allow_future,
@@ -161,7 +171,7 @@ const getProcessedBlock = (
       id: control.field_name,
       title: control.label,
       appearance: 'multiline',
-      container: 'page',
+      description: control.help_text,
       validations: { required: control.validation?.required },
     };
   }
@@ -172,7 +182,7 @@ const getProcessedBlock = (
       id: control.field_name,
       title: control.label,
       appearance: 'multiline',
-      container: 'page',
+      description: control.help_text,
       validations: { required: control.validation?.required },
     };
   }
@@ -183,6 +193,7 @@ const getProcessedBlock = (
       id: 'occurrence_photos',
       title: control.label,
       multiple: true,
+      description: control.help_text,
       validations: { required: control.validation?.required },
     };
   }
@@ -193,6 +204,7 @@ const getProcessedBlock = (
       id: 'sample_photos',
       title: control.label,
       multiple: true,
+      description: control.help_text,
       validations: { required: control.validation?.required },
     };
   }
@@ -209,6 +221,7 @@ const getProcessedBlock = (
       id: control.field_name,
       title: control.label,
       container: 'inline',
+      description: control.help_text,
       validations: { required: control.validation?.required },
     };
   }

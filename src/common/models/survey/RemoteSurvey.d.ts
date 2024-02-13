@@ -77,6 +77,7 @@ interface Control {
     | 'date'
     | 'radio_group'
     | 'select' // same as 'radio_group'
+    | 'checkbox_group' // same as 'radio_group' but allows multiple options
     | 'checkbox'
     | 'hidden'
     | 'select';
