@@ -1,3 +1,4 @@
+/* eslint @typescript-eslint/no-use-before-define: 0 */
 import { Geolocation } from '@capacitor/geolocation';
 import { isValidLocation, Location } from '@flumens';
 import { GeometryInput } from '@flumens/tailwind/dist/Survey';
