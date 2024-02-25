@@ -293,12 +293,14 @@ const getProcessedBlock = (
 export const getIndiciaToLocalSurvey = ({
   title,
   description,
+  nid,
   survey_id,
   controls,
   created_on,
   updated_on,
   created_by_id,
   updated_by_id,
+  is_published,
   groups,
 }: RemoteSurvey): SurveyT => {
   const created_at = new Date(created_on).toISOString();
@@ -306,7 +308,7 @@ export const getIndiciaToLocalSurvey = ({
 
   return {
     type: 'survey',
-    id: `${survey_id}`,
+    id: `${survey_id || `_${nid}`}`,
     title,
     description,
     version: new Date(updated_on).getTime() || 1,
@@ -315,7 +317,7 @@ export const getIndiciaToLocalSurvey = ({
     updated_at,
     created_by: `${created_by_id}`,
     updated_by: `${updated_by_id}`,
-    status: 'active',
+    status: is_published ? 'active' : 'draft',
     container: 'page',
     tags: groups,
     blocks: (controls as any).map(getProcessedBlock).filter(exists) as Block[],
@@ -343,4 +345,6 @@ export default class Survey extends Model {
   constructor(options: any) {
     super({ ...options, store: surveysStore });
   }
+
+  isDraft = () => this.attrs.status === 'draft';
 }

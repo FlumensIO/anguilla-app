@@ -1,6 +1,8 @@
 export default interface RemoteSurvey {
-  id: number;
+  /** Drupal node ID */
+  nid: number;
   title: string;
+  /** Warehouse survey ID. Comes back as 0 for drafts. */
   survey_id: number;
   type:
     | 'single_species_form'
@@ -15,12 +17,13 @@ export default interface RemoteSurvey {
   created_by_uid: number;
   created_by_id: number;
   created_on: string;
-  revision_id: 4;
+  revision_id: number;
   updated_by_uid: number;
   updated_by_id: number;
   updated_on: string;
   groups: string[];
   description: string;
+  is_published: boolean;
 }
 
 export interface Taxon {

@@ -59,6 +59,9 @@ function printErroneousPayload(payload: any) {
 }
 
 const validate = (objectValue: any, block: Block | SurveyAttrs): any => {
+  if (block.type === 'survey' && block.status === 'draft')
+    return [null, ['Draft survey records cannot be uploaded.']];
+
   const validateGroup = (groupObjectValue: any, index?: number) => {
     const validateWrap = (b: Block) => validate(groupObjectValue, b);
     const groupBlock = block as Group | ISurvey;

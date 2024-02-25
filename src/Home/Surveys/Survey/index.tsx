@@ -1,5 +1,6 @@
 /* eslint-disable @getify/proper-arrows/name */
 import { observer } from 'mobx-react';
+import clsx from 'clsx';
 import {
   IonCard,
   IonCardContent,
@@ -56,6 +57,8 @@ const Survey = ({ survey }: Props) => {
   );
   const tags = survey.attrs.tags?.map(getTag);
 
+  const subTitle = survey.isDraft() ? 'Draft' : createdDate;
+
   return (
     <IonCard
       routerLink={`${surveyBasePath}/${survey.cid}`}
@@ -64,7 +67,11 @@ const Survey = ({ survey }: Props) => {
     >
       <IonCardHeader mode="ios">
         <IonCardTitle className="text-xl">{survey.attrs.title}</IonCardTitle>
-        <IonCardSubtitle className="max-w-1/2">{createdDate}</IonCardSubtitle>
+        <IonCardSubtitle
+          className={clsx('max-w-1/2', survey.isDraft() && 'text-secondary')}
+        >
+          {subTitle}
+        </IonCardSubtitle>
         <RecordsBadge className="absolute right-3 top-4">
           {recordsCount?.length}
         </RecordsBadge>

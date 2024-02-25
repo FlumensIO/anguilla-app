@@ -9,16 +9,25 @@ interface Props {
   sample: Sample;
   onUpload: (e?: any) => void;
   uploadIsPrimary?: boolean;
+  isDraftSurvey?: boolean;
 }
 
-const UsersSurveys: FC<Props> = ({ onUpload, sample, uploadIsPrimary }) => {
+const UsersSurveys: FC<Props> = ({
+  onUpload,
+  sample,
+  uploadIsPrimary,
+  isDraftSurvey,
+}) => {
   const { saved } = sample.metadata;
   const { synchronising } = sample.remote;
   const isDisabled = sample.isUploaded();
 
   if (!saved) {
     return (
-      <IonChip color="dark" className="survey-status ion-text-wrap">
+      <IonChip
+        color={isDraftSurvey ? 'secondary' : 'dark'}
+        className="survey-status ion-text-wrap"
+      >
         <T>Draft</T>
       </IonChip>
     );

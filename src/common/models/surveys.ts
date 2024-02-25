@@ -42,6 +42,17 @@ export const syncSurveys = async () => {
     },
   });
 
+  // delete draft surveys
+  const isDraft = (s: Survey) => s.isDraft();
+  const destroy = (s: Survey) => {
+    const index = surveys.findIndex(({ cid }: Survey) => cid === s.cid);
+    surveys.splice(index, 1);
+    return s.destroy();
+  };
+  await Promise.all(surveys.filter(isDraft).map(destroy));
+
+  // TODO: delete any surveys with no records and are missing in the new list
+
   const getListIds = (blocks: Block[]): string[] => {
     const exists = (o: any) => !!o;
 
@@ -65,6 +76,7 @@ export const syncSurveys = async () => {
 
     const survey = getIndiciaToLocalSurvey({
       ...res.data,
+      nid: drupalContentId,
       groups,
     } as RemoteSurvey);
     const cid = `${survey.id}${survey.version}`;
@@ -85,6 +97,7 @@ export const syncSurveys = async () => {
     await syncLists(listIds);
   };
 
+  // create or update new surveys
   await Promise.all(surveyList.map(getSurvey));
 };
 

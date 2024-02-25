@@ -59,12 +59,14 @@ const Survey: FC<Props> = ({ record, style }) => {
   const checkUserStatus = useUserStatusCheck();
 
   const survey = record.getSurvey();
+  const isDeletedSurvey = !survey;
 
   const { synchronising } = record.remote;
 
-  const href = !synchronising
-    ? `/survey/${survey.cid}/record/${record.cid}`
-    : undefined;
+  const href =
+    !synchronising && !isDeletedSurvey
+      ? `/survey/${survey.cid}/record/${record.cid}`
+      : undefined;
 
   const deleteSurveyWrap = () => deleteSurvey();
 
@@ -89,7 +91,16 @@ const Survey: FC<Props> = ({ record, style }) => {
       <IonItem routerLink={href} detail={false} className="survey-list-item">
         <div className="flex h-full w-full items-center justify-between">
           <div className="ml-4 text-sm">Record</div>
-          <OnlineStatus sample={record} onUpload={onUpload} />
+          {isDeletedSurvey && (
+            <div className="ml-4 text-sm text-black/50">(Deleted survey)</div>
+          )}
+          {!isDeletedSurvey && (
+            <OnlineStatus
+              sample={record}
+              onUpload={onUpload}
+              isDraftSurvey={survey.isDraft()}
+            />
+          )}
         </div>
       </IonItem>
 
