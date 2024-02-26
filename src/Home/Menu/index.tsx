@@ -3,6 +3,8 @@ import { observer } from 'mobx-react';
 import { Trans as T } from 'react-i18next';
 import { Page, PickByType, useAlert, useLoader, useToast } from '@flumens';
 import { IonHeader, IonTitle, IonToolbar } from '@ionic/react';
+import Record from 'common/models/record';
+import records from 'common/models/records';
 import appModel, { Attrs } from 'models/app';
 import userModel from 'models/user';
 import Main from './Main';
@@ -87,6 +89,19 @@ const Controller: FC = ({ ...restProps }) => {
     loader.hide();
   };
 
+  async function clearCache() {
+    console.log('Settings:Menu:Controller: clearing cache!');
+    try {
+      const destroyUploaded = (record: Record) =>
+        record.isUploaded() && record.destroy();
+      await Promise.all(records.map(destroyUploaded));
+
+      toast.success('Done');
+    } catch (e: any) {
+      toast.error(e);
+    }
+  }
+
   return (
     <Page id="info-menu">
       <IonHeader className="ion-no-border">
@@ -103,6 +118,7 @@ const Controller: FC = ({ ...restProps }) => {
         resendVerificationEmail={resendVerificationEmail}
         useTraining={useTraining}
         onToggle={onToggle}
+        clearCache={clearCache}
         {...restProps}
       />
     </Page>
