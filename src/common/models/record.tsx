@@ -466,12 +466,15 @@ export default class Record extends Model {
 
     this.attrs.deleted = true;
 
-    const autolocateBlocks = getAutoLocateBlocks(this.getSurvey().attrs.blocks);
+    const survey = this.getSurvey();
+    if (survey) {
+      const autolocateBlocks = getAutoLocateBlocks(survey.attrs.blocks);
 
-    // eslint-disable-next-line @getify/proper-arrows/name
-    autolocateBlocks.forEach((autolocateBlock: Block) =>
-      geolocation.stopLocate(this.cid + autolocateBlock.id)
-    );
+      // eslint-disable-next-line @getify/proper-arrows/name
+      autolocateBlocks.forEach((autolocateBlock: Block) =>
+        geolocation.stopLocate(this.cid + autolocateBlock.id)
+      );
+    }
 
     await super.destroy();
   }
