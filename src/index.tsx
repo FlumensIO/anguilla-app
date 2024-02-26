@@ -7,6 +7,8 @@ import { App as AppPlugin } from '@capacitor/app';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { StatusBar, Style as StatusBarStyle } from '@capacitor/status-bar';
 import { setupIonicReact, isPlatform } from '@ionic/react';
+import config from 'common/config';
+import { initAnalytics } from 'common/flumens';
 import 'common/images/favicon.ico?originalName';
 import 'common/images/logo192.png?originalName';
 import 'common/images/logo512.png?originalName';
@@ -36,13 +38,12 @@ async function init() {
   await lists.ready;
   await records.ready;
 
-  // appModel.attrs.sendAnalytics &&
-  //   initAnalytics({
-  //     dsn: config.sentryDNS,
-  //     environment: config.environment,
-  //     build: config.build,
-  //     release: config.version,
-  //   });
+  initAnalytics({
+    dsn: config.sentryDNS,
+    environment: config.environment,
+    build: config.build,
+    release: config.version,
+  });
 
   appModel.attrs.appSession += 1;
   appModel.save();
