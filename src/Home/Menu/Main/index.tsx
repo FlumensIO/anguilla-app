@@ -21,6 +21,7 @@ import {
 } from '@ionic/react';
 import CONFIG from 'common/config';
 import flumensLogo from 'common/images/flumens.svg';
+import appModel from 'common/models/app';
 import Main from 'Components/Main';
 import logo from './logo.png';
 
@@ -166,11 +167,17 @@ const Component = ({
             />
           </a>
 
-          <p className="mb-8 pt-3 text-primary-900 opacity-70">
-            <span>
+          <div className="mb-8 pt-3 text-primary-900 opacity-70">
+            <div className="text-sm font-medium">
               App version: v{CONFIG.version} ({CONFIG.build})
-            </span>
-          </p>
+            </div>
+
+            {appModel.attrs.offlineVersion && (
+              <div className="my-2 ml-3 inline-flex items-center gap-x-1.5 rounded-full bg-white px-2 py-1 text-xs font-medium text-gray-900 ring-1 ring-inset ring-gray-200">
+                Offline ready
+              </div>
+            )}
+          </div>
         </div>
       </IonList>
     </Main>

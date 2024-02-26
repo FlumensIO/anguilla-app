@@ -5,6 +5,7 @@ export interface Attrs extends ModelAttrs {
   appSession: number;
   sendAnalytics: boolean;
   useTraining: boolean;
+  offlineVersion?: string;
 }
 
 const defaults: Attrs = {
