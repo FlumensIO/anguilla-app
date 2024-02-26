@@ -13,6 +13,7 @@ import '@ionic/react/css/normalize.css';
 import '@ionic/react/css/structure.css';
 import '@ionic/react/css/typography.css';
 import CONFIG from 'common/config';
+import appModel from 'common/models/app';
 import BlockContext from 'Survey/BlockContext';
 import Home from './Home';
 import Info from './Info/router';
@@ -33,6 +34,8 @@ const useOfflineMessage = () => {
       toast({
         message: `The app v${CONFIG.version} (${CONFIG.build}) is ready for offline use.`,
       });
+
+      appModel.attrs.offlineVersion = CONFIG.build;
     };
     navigator.serviceWorker.ready.then(showMessage);
   };
