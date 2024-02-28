@@ -53,6 +53,7 @@ module.exports = {
     './src/**/*.{ts,tsx}',
     'node_modules/@flumens/tailwind/dist/**/*.{js,ts,jsx,tsx}',
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
