@@ -203,9 +203,9 @@ const Component = ({
             />
           </a>
 
-          <div className="mb-8 pt-3 text-primary-900 opacity-70">
+          <div className="mb-8 pt-3 text-primary-900 opacity-90">
             <div className="text-sm font-medium">
-              App version: v{CONFIG.version} ({CONFIG.build})
+              Version {CONFIG.version} ({CONFIG.build})
             </div>
 
             {appModel.attrs.offlineVersion && (
