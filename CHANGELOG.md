@@ -1,8 +1,9 @@
 ### 1.0.1
 
+Enabled custom repeated entry titles.
+Made forms use page container for long choice inputs.
 Fixed disabled date block.
 Fixed number min/max validation.
-Made forms use page container for long choice inputs.
 
 ### 1.0.0
 

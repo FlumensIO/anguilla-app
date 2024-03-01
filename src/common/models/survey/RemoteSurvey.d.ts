@@ -124,7 +124,11 @@ interface SpeciesListControl {
   controls: Control[];
 }
 
-interface SubSamplesControl {
+export interface SubSamplesControl {
   type: 'sub_samples';
+  /**
+   * Template
+   */
+  child_sample_template?: string;
   controls: Control[];
 }

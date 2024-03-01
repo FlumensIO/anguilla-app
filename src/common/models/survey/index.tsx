@@ -2,7 +2,12 @@ import { Model, ModelMetadata } from '@flumens';
 import SurveyT, { Block, ChoiceInput } from '@flumens/tailwind/dist/Survey';
 import { surveysStore } from 'models/store';
 import type RemoteSurvey from './RemoteSurvey';
-import { Control, SpeciesListControl, Taxon } from './RemoteSurvey.d';
+import {
+  Control,
+  SpeciesListControl,
+  SubSamplesControl,
+  Taxon,
+} from './RemoteSurvey.d';
 
 const getTaxonOption = (taxon: Taxon) => {
   const title = taxon.default_common_name
@@ -100,7 +105,7 @@ const getCustomAttribute = (control: Control): Block | null => {
 };
 
 const getProcessedBlock = (
-  control: Control | SpeciesListControl
+  control: Control | SpeciesListControl | SubSamplesControl
 ): Block | null => {
   if (control.type === 'date_picker') {
     return {
@@ -135,6 +140,7 @@ const getProcessedBlock = (
       container: 'page',
       repeated: true,
       title: 'Species',
+      repeatTitle: requiresLocation ? '' : '${occurrence:taxa_taxon_list_id}',
       blocks: control.controls.map(getProcessedBlock).filter(exists) as Block[],
     };
   }
@@ -160,6 +166,7 @@ const getProcessedBlock = (
       container: 'page',
       repeated: true,
       title: 'Entries',
+      repeatTitle: (control as SubSamplesControl).child_sample_template,
       blocks: sampleControls.map(getProcessedBlock).filter(exists) as Block[],
     };
   }
