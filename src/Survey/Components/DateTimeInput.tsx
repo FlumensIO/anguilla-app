@@ -6,7 +6,7 @@ type Props = any;
 const DateTimeInputBlock = ({
   onChange,
   label,
-  disabled,
+  isDisabled,
   max,
   required,
   value,
@@ -16,7 +16,7 @@ const DateTimeInputBlock = ({
       value={value}
       onChange={onChange}
       label={label}
-      disabled={disabled}
+      disabled={isDisabled}
       max={max}
       autoFocus={false}
       usePrettyDates
