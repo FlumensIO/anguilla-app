@@ -66,15 +66,18 @@ const getCustomAttribute = (control: Control): Block | null => {
 
     const multiple = control.control_type === 'checkbox_group';
 
+    const choices = control.terms.map(getOption);
+    const hasLongChoiceList = choices.length > 10;
+
     const block: ChoiceInput = {
       type: 'choice_input',
       id: control.field_name,
       title: control.label,
-      container: multiple ? 'page' : 'inline',
-      appearance: multiple ? 'list' : 'button',
+      container: multiple || hasLongChoiceList ? 'page' : 'inline',
+      appearance: multiple || hasLongChoiceList ? 'list' : 'button',
       multiple,
       description: control.help_text,
-      choices: control.terms.map(getOption),
+      choices,
       validations: { required: control.validation?.required },
     };
 
