@@ -231,7 +231,7 @@ const getProcessedBlock = (
     return {
       type: 'geometry_input',
       id: control.field_name,
-      allow_pin: true,
+      allow_draw_point: true,
       allow_locate: true,
       autolocate: true,
       title: control.label,
