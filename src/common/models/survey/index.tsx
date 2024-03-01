@@ -140,7 +140,7 @@ const getProcessedBlock = (
       container: 'page',
       repeated: true,
       title: 'Species',
-      repeatTitle: requiresLocation ? '' : '${occurrence:taxa_taxon_list_id}',
+      repeatTitle: requiresLocation ? '' : '${occurrence:taxa_taxon_list_id}', // eslint-disable-line
       blocks: control.controls.map(getProcessedBlock).filter(exists) as Block[],
     };
   }
