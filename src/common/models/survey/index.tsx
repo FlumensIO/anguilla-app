@@ -313,25 +313,37 @@ export const getIndiciaToLocalSurvey = ({
   is_published,
   groups,
 }: RemoteSurvey): SurveyT => {
-  const created_at = new Date(created_on).toISOString();
-  const updated_at = new Date(updated_on).toISOString();
+  try {
+    const created_at = new Date(created_on).toISOString();
+    const updated_at = new Date(updated_on).toISOString();
 
-  return {
-    type: 'survey',
-    id: `${survey_id || `_${nid}`}`,
-    title,
-    description,
-    version: new Date(updated_on).getTime() || 1,
-    schema_version: 1,
-    created_at,
-    updated_at,
-    created_by: `${created_by_id}`,
-    updated_by: `${updated_by_id}`,
-    status: is_published ? 'active' : 'draft',
-    container: 'page',
-    tags: groups,
-    blocks: (controls as any).map(getProcessedBlock).filter(exists) as Block[],
-  };
+    return {
+      type: 'survey',
+      id: `${survey_id || `_${nid}`}`,
+      title,
+      description,
+      version: new Date(updated_on).getTime() || 1,
+      schema_version: 1,
+      created_at,
+      updated_at,
+      created_by: `${created_by_id}`,
+      updated_by: `${updated_by_id}`,
+      status: is_published ? 'active' : 'draft',
+      container: 'page',
+      tags: groups,
+      blocks: (controls as any)
+        .map(getProcessedBlock)
+        .filter(exists) as Block[],
+    };
+  } catch (error) {
+    console.error(error);
+
+    throw new Error(
+      `There was an error parsing the survey (id=${
+        survey_id || `_${nid}`
+      }) specification.`
+    );
+  }
 };
 
 export interface Attrs extends SurveyT {}
