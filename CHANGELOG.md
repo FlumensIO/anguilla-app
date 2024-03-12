@@ -1,3 +1,7 @@
+### 1.0.2
+
+Improved incoming survey specification verification.
+
 ### 1.0.1
 
 Enabled custom repeated entry titles.

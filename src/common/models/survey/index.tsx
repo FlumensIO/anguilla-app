@@ -9,6 +9,25 @@ import {
   Taxon,
 } from './RemoteSurvey.d';
 
+const checkBlockIdUniqueness = (blocks: Block[]) => {
+  const checkUniqueness = (uniqueControlIds: Set<any>) => (block: Block) => {
+    if (uniqueControlIds.has(block.id)) {
+      throw new Error(
+        `A duplicate control id was used for "${block.title || block.type}" ("${
+          block.id
+        }")`
+      );
+    }
+
+    uniqueControlIds.add(block.id);
+
+    if (block.type === 'group')
+      block.blocks.forEach(checkUniqueness(new Set()));
+  };
+
+  blocks.forEach(checkUniqueness(new Set()));
+};
+
 const getTaxonOption = (taxon: Taxon) => {
   const title = taxon.default_common_name
     ? `${taxon.default_common_name}`
@@ -23,82 +42,100 @@ const getTaxonOption = (taxon: Taxon) => {
 const exists = (o: any) => !!o;
 
 const getCustomAttribute = (control: Control): Block | null => {
-  if (control.control_type === 'textarea') {
-    return {
-      type: 'text_input',
-      id: control.field_name,
-      title: control.label,
-      appearance: 'multiline',
-      description: control.help_text,
-      validations: { required: control.validation?.required },
-    };
+  try {
+    if (control.control_type === 'textarea') {
+      return {
+        type: 'text_input',
+        id: control.field_name,
+        title: control.label,
+        appearance: 'multiline',
+        description: control.help_text,
+        validations: { required: control.validation?.required },
+      };
+    }
+
+    if (control.control_type === 'text') {
+      return {
+        type: 'text_input',
+        id: control.field_name,
+        title: control.label,
+        container: 'inline',
+        description: control.help_text,
+        validations: { required: control.validation?.required },
+      };
+    }
+
+    if (control.control_type === 'number') {
+      return {
+        type: 'number_input',
+        id: control.field_name,
+        title: control.label,
+        appearance: 'counter',
+        container: 'inline',
+        description: control.help_text,
+        placeholder: '0',
+        validations: {
+          required: control.validation?.required,
+          min: Number.parseInt(control.validation?.min || '', 10) || undefined,
+          max: Number.parseInt(control.validation?.max || '', 10) || undefined,
+        },
+      };
+    }
+
+    if (
+      control.control_type === 'radio_group' ||
+      control.control_type === 'checkbox_group' ||
+      control.control_type === 'select'
+    ) {
+      const getOption = (term: any) => ({
+        data_name: term.id,
+        title: term.term,
+      });
+
+      const multiple = control.control_type === 'checkbox_group';
+
+      const choices = control.terms?.map(getOption) || [];
+
+      const hasLongChoiceList = choices.length > 10;
+
+      const block: ChoiceInput = {
+        type: 'choice_input',
+        id: control.field_name,
+        title: control.label,
+        container: multiple || hasLongChoiceList ? 'page' : 'inline',
+        appearance: multiple || hasLongChoiceList ? 'list' : 'button',
+        multiple,
+        description: control.help_text,
+        choices,
+        validations: { required: control.validation?.required },
+      };
+
+      return block;
+    }
+
+    if (
+      control.control_type === 'checkbox' &&
+      control.data_type === 'boolean'
+    ) {
+      return {
+        type: 'yes_no_input',
+        id: control.field_name,
+        title: control.label,
+        description: control.help_text,
+        appearance: 'toggle',
+      };
+    }
+  } catch (error: any) {
+    console.error(error);
+
+    throw new Error(
+      `Error processing "${control.label || control.field_name}" attribute: ${
+        error.message
+      }`
+    );
   }
 
-  if (control.control_type === 'text') {
-    return {
-      type: 'text_input',
-      id: control.field_name,
-      title: control.label,
-      container: 'inline',
-      description: control.help_text,
-      validations: { required: control.validation?.required },
-    };
-  }
-
-  if (control.control_type === 'number') {
-    return {
-      type: 'number_input',
-      id: control.field_name,
-      title: control.label,
-      appearance: 'counter',
-      container: 'inline',
-      description: control.help_text,
-      placeholder: '0',
-      validations: {
-        required: control.validation?.required,
-        min: Number.parseInt(control.validation?.min || '', 10) || undefined,
-        max: Number.parseInt(control.validation?.max || '', 10) || undefined,
-      },
-    };
-  }
-
-  if (
-    control.control_type === 'radio_group' ||
-    control.control_type === 'checkbox_group' ||
-    control.control_type === 'select'
-  ) {
-    const getOption = (term: any) => ({ data_name: term.id, title: term.term });
-
-    const multiple = control.control_type === 'checkbox_group';
-
-    const choices = control.terms.map(getOption);
-    const hasLongChoiceList = choices.length > 10;
-
-    const block: ChoiceInput = {
-      type: 'choice_input',
-      id: control.field_name,
-      title: control.label,
-      container: multiple || hasLongChoiceList ? 'page' : 'inline',
-      appearance: multiple || hasLongChoiceList ? 'list' : 'button',
-      multiple,
-      description: control.help_text,
-      choices,
-      validations: { required: control.validation?.required },
-    };
-
-    return block;
-  }
-
-  if (control.control_type === 'checkbox' && control.data_type === 'boolean') {
-    return {
-      type: 'yes_no_input',
-      id: control.field_name,
-      title: control.label,
-      description: control.help_text,
-      appearance: 'toggle',
-    };
-  }
-
+  // we are missing a control implementation
   console.warn(control);
 
   return null;
@@ -317,6 +354,12 @@ export const getIndiciaToLocalSurvey = ({
     const created_at = new Date(created_on).toISOString();
     const updated_at = new Date(updated_on).toISOString();
 
+    const blocks = (controls as any)
+      .map(getProcessedBlock)
+      .filter(exists) as Block[];
+
+    is_published && checkBlockIdUniqueness(blocks);
+
     return {
       type: 'survey',
       id: `${survey_id || `_${nid}`}`,
@@ -331,17 +374,15 @@ export const getIndiciaToLocalSurvey = ({
       status: is_published ? 'active' : 'draft',
       container: 'page',
       tags: groups,
-      blocks: (controls as any)
-        .map(getProcessedBlock)
-        .filter(exists) as Block[],
+      blocks,
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
 
     throw new Error(
-      `There was an error parsing the survey (id=${
-        survey_id || `_${nid}`
-      }) specification.`
+      `There was an error parsing the survey ("${
+        title || survey_id || `_${nid}`
+      }") specification:  ${error.message}`
     );
   }
 };
