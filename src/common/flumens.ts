@@ -19,7 +19,7 @@ export { default as device } from '@flumens/ionic/dist/utils/device';
 export { default as getNewUUID } from '@flumens/ionic/dist/utils/uuid';
 export { useToast, useAlert, useLoader } from '@flumens/ionic/dist/hooks';
 export * from '@flumens/ionic/dist/utils/errors';
-export { default as initAnalytics } from '@flumens/ionic/dist/utils/analytics';
+export { options as sentryOptions } from '@flumens/ionic/dist/utils/sentry';
 export {
   default as Model,
   type Options as ModelOptions,

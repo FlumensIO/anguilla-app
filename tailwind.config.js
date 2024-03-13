@@ -1,51 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-const { parseColor } = require('tailwindcss/lib/util/color'); // eslint-disable-line import/no-extraneous-dependencies
 const colors = require('tailwindcss/colors');
-
-/* Converts HEX color to RGB */
-const toRGB = value => parseColor(value)?.color?.join(', ');
-
-const isCustomGroup = colorGroup =>
-  [
-    '-primary',
-    '-secondary',
-    '-tertiary',
-    '-success',
-    '-warning',
-    '-danger',
-  ].includes(colorGroup);
-
-function exposeColorsAsCssVariables({ addBase, theme }) {
-  function extractColorVars(colorObj, colorGroup = '') {
-    const getColours = (vars, colorKey) => {
-      const value = colorObj[colorKey];
-      const cssVariable =
-        colorKey === 'DEFAULT'
-          ? `--color${colorGroup}`
-          : `--color${colorGroup}-${colorKey}`;
-
-      const rgb = toRGB(value);
-
-      const rgbVars = isCustomGroup(colorGroup)
-        ? { [`${cssVariable}-rgb`]: rgb }
-        : {};
-
-      const newVars =
-        typeof value === 'string'
-          ? { [cssVariable]: value }
-          : extractColorVars(value, `-${colorKey}`);
-
-      return { ...vars, ...newVars, ...rgbVars };
-    };
-
-    return Object.keys(colorObj).reduce(getColours, {});
-  }
-
-  addBase({
-    ':root': extractColorVars(theme('colors')),
-  });
-}
+const flumensTailwind = require('@flumens/tailwind/tailwind.config.js');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -141,5 +97,5 @@ module.exports = {
       },
     },
   },
-  plugins: [exposeColorsAsCssVariables],
+  plugins: flumensTailwind.plugins,
 };

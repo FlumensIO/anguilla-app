@@ -1,6 +1,7 @@
 ### 1.0.2
 
 Improved incoming survey specification verification.
+Updated dependencies.
 
 ### 1.0.1
 

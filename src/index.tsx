@@ -6,9 +6,10 @@ import { initReactI18next } from 'react-i18next';
 import { App as AppPlugin } from '@capacitor/app';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { StatusBar, Style as StatusBarStyle } from '@capacitor/status-bar';
+import { sentryOptions } from '@flumens';
 import { setupIonicReact, isPlatform } from '@ionic/react';
+import * as Sentry from '@sentry/browser';
 import config from 'common/config';
-import { initAnalytics } from 'common/flumens';
 import 'common/images/favicon.ico?originalName';
 import 'common/images/logo192.png?originalName';
 import 'common/images/logo512.png?originalName';
@@ -38,12 +39,18 @@ async function init() {
   await lists.ready;
   await records.ready;
 
-  initAnalytics({
-    dsn: config.sentryDNS,
-    environment: config.environment,
-    build: config.build,
-    release: config.version,
-  });
+  appModel.attrs.sendAnalytics &&
+    Sentry.init({
+      ...sentryOptions,
+      dsn: config.sentryDNS,
+      environment: config.environment,
+      release: config.version,
+      dist: config.build,
+      initialScope: {
+        user: { id: userModel.id },
+        tags: { session: appModel.attrs.appSession },
+      },
+    });
 
   appModel.attrs.appSession += 1;
   appModel.save();
