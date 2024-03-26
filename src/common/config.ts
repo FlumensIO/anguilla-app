@@ -5,7 +5,7 @@ import {
 import { isPlatform } from '@ionic/core';
 
 const backendUrl =
-  process.env.APP_BACKEND_URL || 'https://live-brc-anguilla.pantheonsite.io';
+  process.env.APP_BACKEND_URL || 'https://record.axanationaltrust.com';
 
 const indiciaUrl =
   process.env.APP_BACKEND_INDICIA_URL || 'https://warehouse1.indicia.org.uk';
