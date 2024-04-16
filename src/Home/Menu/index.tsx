@@ -8,6 +8,7 @@ import records from 'common/models/records';
 import appModel, { Attrs } from 'models/app';
 import userModel from 'models/user';
 import Main from './Main';
+import config from 'common/config';
 import './styles.scss';
 
 function showLogoutConfirmationDialog(callback: any, alert: any) {
@@ -106,7 +107,7 @@ const Controller: FC = ({ ...restProps }) => {
     <Page id="info-menu">
       <IonHeader className="ion-no-border">
         <IonToolbar>
-          <IonTitle>Anguilla App</IonTitle>
+          <IonTitle>{config.appTitle}</IonTitle>
         </IonToolbar>
       </IonHeader>
 
