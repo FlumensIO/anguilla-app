@@ -8,6 +8,7 @@ import {
   SubSamplesControl,
   Taxon,
 } from './RemoteSurvey.d';
+import config from 'common/config';
 
 const checkBlockIdUniqueness = (blocks: Block[]) => {
   const checkUniqueness = (uniqueControlIds: Set<any>) => (block: Block) => {
@@ -287,7 +288,7 @@ const getProcessedBlock = (
           isDefault: true,
           title: 'Satellite',
           style: 'mapbox://styles/mapbox/satellite-streets-v11',
-          view: { latitude: 18.23, longitude: -63.04, zoom: 10 }, // Anguilla
+          view: { latitude: config.appMapLatitude, longitude: config.appMapLongitude, zoom: config.appMapZoom },
         },
       ],
       container: 'page',
