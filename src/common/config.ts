@@ -10,10 +10,57 @@ const backendUrl =
 const indiciaUrl =
   process.env.APP_BACKEND_INDICIA_URL || 'https://warehouse1.indicia.org.uk';
 
+const appTitle =
+  process.env.APP_TITLE || 'Anguilla App';
+
+const appCustomLogo =
+  process.env.APP_CUSTOM_LOGO || '';
+
+const appAboutHtml =
+  process.env.APP_ABOUT_HTML || '\
+    <p>\
+      The Anguilla National Trust (ANT) was founded in 1989 with the mandate \
+      to sustain the island’s natural and cultural heritage through active \
+      management and education for the benefit of today’s and tomorrow’s \
+      generations.\
+    </p>\
+    <p>\
+      The ANT has remained true to that mandate and, since its formation, we \
+      have been instrumental in the creation of Anguilla’s national parks, \
+      conservation areas, and heritage sites and continue to be involved in \
+      their day-to-day management.\
+    </p>\
+    <p>\
+      We conduct essential research and conservation work, including habitat \
+      and species monitoring and we work year-round to raise public \
+      awareness about the fragility, complexity, and beauty of the island’s \
+      natural and cultural resources.\
+    </p>\
+    <p>\
+      Above all, we act as voice for Anguilla’s national heritage. The ANT \
+      has been in housed in the Old Customs Building in The Valley since \
+      1991.\
+    </p>';
+
+const appMapLatitude =
+    process.env.APP_MAP_LATITUDE || 18.23;
+
+const appMapLongitude =
+    process.env.APP_MAP_LONGITUDE || -63.04;
+
+const appMapZoom =
+    process.env.APP_MAP_ZOOM || 10;
+
 const CONFIG = {
   environment: process.env.NODE_ENV as string,
   version: process.env.APP_VERSION as string,
   build: process.env.APP_BUILD as string,
+  appTitle: appTitle,
+  appAboutHtml: appAboutHtml,
+  appCustomLogo: appCustomLogo,
+  appMapLatitude: +appMapLatitude,
+  appMapLongitude: +appMapLongitude,
+  appMapZoom: +appMapZoom,
 
   sentryDNS: process.env.APP_SENTRY_KEY as string,
 
