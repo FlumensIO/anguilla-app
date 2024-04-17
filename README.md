@@ -56,7 +56,7 @@ To configure the Rest endpoints, go to admin/config/services/rest in Drupal then
 * Enable the Indicia form layout endpoint. Allow GET with accepted format json. Set the oauth2 authentication provider and save it.
 
 Enable `Access POST on User registration with password resource` to `Anonymous User` in `admin/people/permissions`.
-Enable `Cancel own user account` to `Authenticated User` in `admin/people/permissions`.
+Enable `Access GET on Indicia form layout resource`, `Access GET on Indicia form layout list resource` and `Cancel own user account` to `Authenticated User` in `admin/people/permissions`.
 
 ## Building
 
