@@ -10,11 +10,7 @@ const backendUrl =
 const indiciaUrl =
   process.env.APP_BACKEND_INDICIA_URL || 'https://warehouse1.indicia.org.uk';
 
-const appTitle =
-  process.env.APP_TITLE || 'Anguilla App';
-
-const appCustomLogo =
-  process.env.APP_CUSTOM_LOGO || '';
+const appTitle = process.env.APP_TITLE || 'Anguilla App';
 
 const appAboutHtml =
   process.env.APP_ABOUT_HTML ||

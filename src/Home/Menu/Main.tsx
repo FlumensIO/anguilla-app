@@ -23,10 +23,9 @@ import {
 } from '@ionic/react';
 import CONFIG from 'common/config';
 import flumensLogo from 'common/images/flumens.svg';
+import logo from 'common/images/logo512.png';
 import appModel from 'common/models/app';
 import Main from 'Components/Main';
-import logo from './logo.png';
-const appLogo = CONFIG.appCustomLogo ? require('./' + CONFIG.appCustomLogo).default : logo;
 
 function clearCacheDialog(clearCache: any, alert: any) {
   alert({
@@ -81,8 +80,7 @@ const Component = ({
 
   return (
     <Main>
-
-      <img src={appLogo} alt="logo" className="mx-auto block h-[140px]" />
+      <img src={logo} alt="logo" className="mx-auto block h-[140px]" />
 
       <IonList>
         <IonItemDivider>
