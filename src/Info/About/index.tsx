@@ -1,15 +1,16 @@
 import { Page, Header, Section } from '@flumens';
-import Main from 'Components/Main';
 import config from 'common/config';
-
-const { P } = Section;
+import Main from 'Components/Main';
 
 const Component = () => (
   <Page id="about">
     <Header title="About" />
     <Main>
       <Section>
-      <div dangerouslySetInnerHTML={{__html: config.appAboutHtml}}></div>
+        <div
+          dangerouslySetInnerHTML={{ __html: config.appAboutHtml }}
+          className="rounded-md bg-white p-3"
+        />
       </Section>
     </Main>
   </Page>
