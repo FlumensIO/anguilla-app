@@ -14,6 +14,11 @@ const required = [
 const development = {
   APP_BACKEND_URL: '',
   APP_BACKEND_INDICIA_URL: '',
+  APP_TITLE: '',
+  APP_ABOUT_HTML: '',
+  APP_MAP_LATITUDE: '',
+  APP_MAP_LONGITUDE: '',
+  APP_MAP_ZOOM: '',
 };
 
 if (process.env.NODE_ENV === 'production') {

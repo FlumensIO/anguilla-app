@@ -23,9 +23,9 @@ import {
 } from '@ionic/react';
 import CONFIG from 'common/config';
 import flumensLogo from 'common/images/flumens.svg';
+import logo from 'common/images/logo512.png';
 import appModel from 'common/models/app';
 import Main from 'Components/Main';
-import logo from './logo.png';
 
 function clearCacheDialog(clearCache: any, alert: any) {
   alert({

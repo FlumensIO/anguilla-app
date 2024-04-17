@@ -37,7 +37,7 @@ const useOfflineMessage = () => {
 
       appModel.attrs.offlineVersion = CONFIG.build;
     };
-    navigator.serviceWorker.ready.then(showMessage);
+    navigator.serviceWorker?.ready.then(showMessage);
   };
   useEffect(showOfflineReadyMessage, []);
 };
