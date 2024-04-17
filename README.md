@@ -1,12 +1,12 @@
 # Anguilla recording app
 
-This codebase includes a Progressive Web Application (PWA) that combines offline functionality, secure OAuth2 user authentication, and data uploads to the Indicia warehouse. The application is designed to be user-friendly, offering seamless access and interaction even without an internet connection. It uses a Drupal and Indicia installation with the (IForm Layout Builder)[https://github.com/Indicia-Team/drupal-module-iform-layout-builder] module to support building customisable forms which can be dynamically synchronised into the app.
+This codebase includes a Progressive Web Application (PWA) that combines offline functionality, secure OAuth2 user authentication, and data uploads to the Indicia warehouse. The application is designed to be user-friendly, offering seamless access and interaction even without an internet connection. It uses a Drupal and Indicia installation with the (Indicia Layout Builder)[https://github.com/Indicia-Team/drupal-module-iform-layout-builder] module to support building customisable forms which can be dynamically synchronised into the app.
 
 ## Drupal configuration
 
 The app requires a Drupal installation configured with Indicia online recording modules, including:
 * (iform)[https://github.com/Indicia-Team/drupal-8-module-iform]
-* (IForm Layout Builder)[https://github.com/Indicia-Team/drupal-module-iform-layout-builder]
+* (Indicia Layout Builder)[https://github.com/Indicia-Team/drupal-module-iform-layout-builder]
 * (Indicia API)[https://github.com/Indicia-Team/drupal-8-module-indicia-api].
 
 Enable the core Rest module, then install the following modules using Composer and enable them:
@@ -65,7 +65,6 @@ For developers, the app's configuration is centralized in the `src/common/config
 To build this codebase, ensure you have Node 16 or higher installed on your development environment (tested on npm 10.2.3 and node 18.19.0). Before initiating the build process, you must set the following environment variables:
 * `APP_TITLE`
 * `APP_ABOUT_HTML` - About page HTML text
-* `APP_CUSTOM_LOGO` - name of a custom logo PNG file for the app. The file must be placed in src/Home/Menu/Main before building.
 * `APP_MAP_LATITUDE` - latitude of the default map position
 * `APP_MAP_LONGITUDE` - longitude of the default map position
 * `APP_MAP_ZOOM` - default zoom level for the map
@@ -79,7 +78,6 @@ To build this codebase, ensure you have Node 16 or higher installed on your deve
 These variables are essential for connecting to the app's Drupal services, error monitoring through Sentry, and integrating map functionality via Mapbox, respectively. You can specify them by saving a .env file in the root folder of the code, containing the following content and replacing the values as appropriate:
 ```
 export APP_TITLE=My recording app
-export APP_CUSTOM_LOGO=my_logo.png
 export APP_ABOUT_HTML=<p>An introduction to my app.</p><p>Further information in a second paragraph.</p>
 export APP_MAP_LATITUDE=50.827
 export APP_MAP_LONGITUDE=2.045
@@ -91,6 +89,11 @@ export APP_BACKEND_CLIENT_PASS=my_secret
 export APP_SENTRY_KEY=my_sentry_key
 export APP_MAPBOX_MAP_KEY=my_mapbox_key
 ```
+
+To customise the logos and icon used by the app, replace the following files:
+* src/common/images/favicon.ico
+* src/common/images/logo192.png (192 x 192 pixels)
+* src/common/images/logo512.png (512 x 512 pixels).
 
 To obtain a Sentry key, register and create a project on Sentry.io then the key is available on the project settings page > SDK Setup > Client Keys (DSN).
 
