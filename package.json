@@ -1,6 +1,7 @@
 {
   "name": "anguilla-app",
   "version": "1.0.3",
+  "title": "Anguilla App",
   "scripts": {
     "start": "webpack serve --progress --port 8000",
     "build": "NODE_ENV=production webpack",
@@ -74,7 +75,7 @@
     "@capacitor/cli": "^5.5.1",
     "@flumens/eslint-config": "2.0.1",
     "@flumens/prettier-config": "0.2.3",
-    "@flumens/webpack-config": "5.3.0",
+    "@flumens/webpack-config": "5.4.1",
     "@types/jest": "29.5.3",
     "@types/react": "^18.2.38",
     "@types/react-dom": "^18.2.17",
