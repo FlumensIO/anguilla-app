@@ -15,5 +15,3 @@ coverage
 .npm-debug.log
 .vercel
 .gradle
-src/Home/Menu/Main/*.png
-!src/Home/Menu/Main/logo.png
