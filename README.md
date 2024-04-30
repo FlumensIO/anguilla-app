@@ -113,3 +113,11 @@ To obtain a Sentry key, register and create a project on Sentry.io then the key 
 > 1. It is designed to run at the root path of a domain name. So you can place this anywhere on the server as long as it is served from the root path - assigning a subdomain should work well for this.
 > 2. It needs a fallback route rule. The app is entered through a static index.html file at the root path, but its navigation will change the URL path, so refreshing the page will result in a 404. To fix this, any path should fallback to the index.html. Probably every server/proxy has some sort of option for this, e.g apache, nginx.
 > 3. The app must be served using https as it uses features unavailable using http.
+
+If you need to run the app from a subfolder, e.g. within a Drupal installation, then perform the following manual steps (using a subfolder /app for example, modify as required):
+1. Modify src/App.tsx and change the line `<IonReactRouter>` to `<IonReactRouter basename="/app">`, replacing app with the name of the subfolder if different.
+2. Run `APP_BUILD=123 npm run build:production` to generate the files in the `./build` subfolder of the development environment.
+3. Edit the `./build/index.html` file and search and replace `="/` for `="/app/` then save it.
+4. Search and replace `"/` for `"/app/` in both `./build/service-worker.js` and `./build/service-worker.js.map` then save the files.
+4. In `./build/js/main-*.js` and `./build/js/main-*.js.map` files (where * is a sequence of numbers), search for `service-worker.js` and replace with `app/service-worker.js` then save the files.
+5. Serve the resulting build. The app is compiled into a number of files within the `./build` folder which can be hosted on a site.
