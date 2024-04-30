@@ -27,6 +27,8 @@ import logo from 'common/images/logo512.png';
 import appModel from 'common/models/app';
 import Main from 'Components/Main';
 
+import { useHistory } from 'react-router-dom';
+
 function clearCacheDialog(clearCache: any, alert: any) {
   alert({
     header: 'Clear cache',
@@ -78,9 +80,13 @@ const Component = ({
 
   const onClearCacheDialog = () => clearCacheDialog(clearCache, alert);
 
+  const history = useHistory();
+  const logoPath = history.createHref({pathname: logo});
+  const flumensLogoPath = history.createHref({pathname: flumensLogo});
+
   return (
     <Main>
-      <img src={logo} alt="logo" className="mx-auto block h-[140px]" />
+      <img src={logoPath} alt="logo" className="mx-auto block h-[140px]" />
 
       <IonList>
         <IonItemDivider>
@@ -198,7 +204,7 @@ const Component = ({
           <a href="https://flumens.io">
             <img
               className="m-auto block max-h-8 w-full"
-              src={flumensLogo}
+              src={flumensLogoPath}
               alt="logo"
             />
           </a>
