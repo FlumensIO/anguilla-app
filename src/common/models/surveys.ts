@@ -66,9 +66,9 @@ export const syncSurveys = async () => {
     return blocks.flatMap(getListId).filter(exists);
   };
 
-  const getSurvey = async ({ id: drupalContentId, groups }: any) => {
+  const getSurvey = async ({ id: drupalContentId, href, group_id, groups }: any) => {
     const res = await axios.request({
-      url: `${config.backend.url}/iform_layout_builder/form_layout/${drupalContentId}?_format=json`,
+      url: `${href}?_format=json`,
       headers: {
         Authorization: `Bearer ${await userModel.getAccessToken()}`,
       },
@@ -79,7 +79,7 @@ export const syncSurveys = async () => {
       nid: drupalContentId,
       groups,
     } as RemoteSurvey);
-    const cid = `${survey.id}${survey.version}`;
+    const cid = `${survey.id}_${group_id}${survey.version}`;
 
     const byCID = (s: Survey) => s.cid === cid;
     let surveyModel = surveys.find(byCID);
