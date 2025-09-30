@@ -12,7 +12,7 @@ The app requires a Drupal installation configured with Indicia online recording 
 Enable the core Rest module, then install the following modules using Composer and enable them:
 * (Simple OAuth (OAuth2) & OpenID Connect)[https://www.drupal.org/project/simple_oauth]
 * (Rest UI)[https://www.drupal.org/project/restui].
-* (User registration password)[https://www.drupal.org/user_registrationpassword)]
+* (User registration password)[https://www.drupal.org/user_registrationpassword]
 
 Plus the following custom modules:
   * User registration password REST - from your modules/custom folder:
