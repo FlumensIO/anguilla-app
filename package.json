@@ -1,6 +1,6 @@
 {
   "name": "anguilla-app",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "title": "Anguilla App",
   "scripts": {
     "start": "webpack serve --progress --port 8000",

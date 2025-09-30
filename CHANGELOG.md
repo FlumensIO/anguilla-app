@@ -1,3 +1,9 @@
+### 1.1.0
+*2025-09-30*
+
+* Now submits the sample.group_id to correctly link submissions to the activity the form was linked
+  to.
+
 ### 1.0.3
 
 Update the backend URL.
