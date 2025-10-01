@@ -343,6 +343,7 @@ export const getIndiciaToLocalSurvey = ({
   description,
   nid,
   survey_id,
+  group_id,
   controls,
   created_on,
   updated_on,
@@ -368,13 +369,14 @@ export const getIndiciaToLocalSurvey = ({
       description,
       version: new Date(updated_on).getTime() || 1,
       schema_version: 1,
+      group_id,
       created_at,
       updated_at,
       created_by: `${created_by_id}`,
       updated_by: `${updated_by_id}`,
       status: is_published ? 'active' : 'draft',
       container: 'page',
-      tags: groups,
+      tags: group_id ? groups : [],
       blocks,
     };
   } catch (error: any) {
@@ -397,6 +399,8 @@ export default class Survey extends Model {
   }
 
   declare id: string;
+
+  declare group_id: number;
 
   // eslint-disable-next-line
   // @ts-ignore

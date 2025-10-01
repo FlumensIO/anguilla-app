@@ -4,6 +4,8 @@ export default interface RemoteSurvey {
   title: string;
   /** Warehouse survey ID. Comes back as 0 for drafts. */
   survey_id: number;
+  /** Warehouse group ID. */
+  group_id: number;
   type:
     | 'single_species_form'
     | 'list_species_form'

@@ -21,10 +21,11 @@ const surveys: Collection = initStoredSamples(surveysStore, Survey);
 set(surveys, { isFetching: false });
 
 const latestOnes = (agg: any, survey: Survey) => {
-  if (!agg[survey.id]) {
-    agg[survey.id] = survey;
-  } else if (agg[survey.id].attrs.version < survey.attrs.version) {
-    agg[survey.id] = survey;
+  const uniq = `${survey.id}_${survey.group_id}`;
+  if (!agg[uniq]) {
+    agg[uniq] = survey;
+  } else if (agg[uniq].attrs.version < survey.attrs.version) {
+    agg[uniq] = survey;
   }
   return agg;
 };
