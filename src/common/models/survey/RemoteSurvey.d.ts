@@ -1,3 +1,5 @@
+import type { HTMLInputTypeAttribute } from 'react';
+
 export default interface RemoteSurvey {
   /** Drupal node ID */
   nid: number;
@@ -86,6 +88,10 @@ interface Control {
     | 'checkbox'
     | 'hidden'
     | 'select';
+  /**
+   * HTML5 input type for text controls, e.g. `email`, `time`.
+   */
+  input_type?: HTMLInputTypeAttribute;
   label?: string;
   allow_vague_dates?: boolean;
   lockable?: boolean;

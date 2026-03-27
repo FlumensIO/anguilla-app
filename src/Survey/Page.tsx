@@ -1,9 +1,9 @@
 import { useRouteMatch } from 'react-router';
 import { Header, Page } from '@flumens';
 import { Block as BlockT } from '@flumens/tailwind/dist/Survey';
-import Block from '@flumens/tailwind/dist/components/Block';
 import { getBlockConfigFromPath } from '@flumens/tailwind/dist/components/Block/utils';
 import Main from 'Components/Main';
+import Block from 'Survey/Components/Block';
 import BlocksWithRoundedGroups from './Components/BlocksWithRoundedGroups';
 import { useRecord, useSurveyConfig } from './hooks';
 

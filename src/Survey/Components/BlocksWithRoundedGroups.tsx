@@ -1,6 +1,6 @@
 import { Block as BlockT } from '@flumens/tailwind/dist/Survey';
-import Block from '@flumens/tailwind/dist/components/Block';
 import { IonList } from '@ionic/react';
+import Block from 'Survey/Components/Block';
 
 type Props = {
   surveyBlocks: BlockT[];

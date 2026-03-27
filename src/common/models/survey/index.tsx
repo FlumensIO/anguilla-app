@@ -63,7 +63,8 @@ const getCustomAttribute = (control: Control): Block | null => {
         container: 'inline',
         description: control.help_text,
         validations: { required: control.validation?.required },
-      };
+        ...(control.input_type ? { input_type: control.input_type } : {}),
+      } as any;
     }
 
     if (control.control_type === 'number') {

@@ -9,6 +9,7 @@ import lists from 'common/models/lists';
 import GeometryInput from 'Survey/Components/GeometryInput';
 import PageLink from 'Survey/Components/PageLinkWithMapPreview';
 import PhotoInput from 'Survey/Components/PhotoInput';
+import TextInput from 'Survey/Components/TextInput';
 import DateTimeInput from './Components/DateTimeInput';
 
 export default ({ children }: any) => {
@@ -17,6 +18,7 @@ export default ({ children }: any) => {
       ...defaultBlockContext,
       platform: 'ios',
       DateTimeInput,
+      TextInput,
       GeometryInput,
       PhotoInput,
       PageLink,
