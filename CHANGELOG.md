@@ -1,3 +1,9 @@
+### 1.1.1
+*2026-18-05*
+
+* Fixes issue where uploaded JPG images are being treated as PNG due to canvas falling back on PNG
+  when mime type not detected correctly.
+
 ### 1.1.0
 *2025-09-30*
 
