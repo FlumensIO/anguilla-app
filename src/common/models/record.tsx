@@ -35,6 +35,26 @@ const REMOTE_URL = `${config.backend.indicia.url}/index.php/services/rest`;
 
 const exists = (o: any) => !!o;
 
+const getMediaType = (media: any) => {
+  const explicitType = media?.type?.toLowerCase();
+  if (explicitType) {
+    if (explicitType === 'jpg' || explicitType === 'jpeg') return 'image/jpeg';
+    if (explicitType.startsWith('image/')) return explicitType;
+    return `image/${explicitType}`;
+  }
+
+  const dataUrlType = media?.data
+    ?.match(/^data:([^;,]+)[;,]/i)?.[1]
+    ?.toLowerCase();
+  if (dataUrlType) {
+    if (dataUrlType === 'jpg' || dataUrlType === 'jpeg') return 'image/jpeg';
+    if (dataUrlType.startsWith('image/')) return dataUrlType;
+    return `image/${dataUrlType}`;
+  }
+
+  return 'image/jpeg';
+};
+
 function setNewRemoteID(model: any & { id?: any }, responseData: any) {
   if (!responseData || !responseData.values) {
     console.warn("Model didn't receive an id from the server");
@@ -236,10 +256,8 @@ export default class Record extends Model {
     };
 
     const getFormData = async ([name, m]: any) => {
-      // can provide both image/jpeg and jpeg
-      const extension = m.data.split('/')?.[1]?.split(';')?.[0];
-
-      const mediaType = `image/${extension}`;
+      const mediaType = getMediaType(m);
+      const extension = mediaType.replace('image/', '') || 'jpeg';
 
       const url = m.data;
 

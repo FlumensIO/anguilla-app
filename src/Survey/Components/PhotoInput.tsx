@@ -6,6 +6,41 @@ import config from 'common/config';
 
 type Props = { value?: any; onChange: any; isDisabled?: boolean };
 
+const getMimeFromUrl = (url: string) => {
+  const extension = url
+    .split('?')[0]
+    .split('#')[0]
+    .split('.')
+    .pop()
+    ?.toLowerCase();
+
+  if (extension === 'jpg' || extension === 'jpeg') return 'image/jpeg';
+  if (extension === 'png') return 'image/png';
+
+  return null;
+};
+
+const convertDataUrlToJpeg = (dataUrl: string): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        reject(new Error('Failed to initialize image canvas context.'));
+        return;
+      }
+
+      ctx.drawImage(img, 0, 0);
+      resolve(canvas.toDataURL('image/jpeg', 0.92));
+    };
+    img.onerror = () => reject(new Error('Failed to load data URL image.'));
+    img.src = dataUrl;
+  });
+
 const PhotoInput = ({ value, onChange, isDisabled }: Props) => {
   const photosObject = value || {};
   const addCID = ([cid, m]: any) => ({ ...m, cid });
@@ -27,14 +62,28 @@ const PhotoInput = ({ value, onChange, isDisabled }: Props) => {
         true
       );
 
-    const indiciaToFlat = (m: any) => ({
-      data: m.attrs.data,
-      path: m.attrs.path,
-    });
+    const indiciaToFlat = async (m: any, imageURL: URL) => {
+      const preferredType = getMimeFromUrl(imageURL);
+      const hasPngDataUrl = /^data:image\/png(;|,)/i.test(m.attrs.data);
 
-    const imageModels = await (
-      await Promise.all<any>(photoURLs.map(getImageModel))
-    ).map(indiciaToFlat);
+      let data = m.attrs.data;
+      if (preferredType === 'image/jpeg' && hasPngDataUrl) {
+        data = await convertDataUrlToJpeg(m.attrs.data);
+      }
+
+      return {
+        data,
+        path: m.attrs.path,
+        type: preferredType || m.attrs.type,
+      };
+    };
+
+    const rawModels = await Promise.all<any>(photoURLs.map(getImageModel));
+    const imageModels = await Promise.all(
+      rawModels.map((model: any, index: number) =>
+        indiciaToFlat(model, photoURLs[index])
+      )
+    );
 
     onChange(imageModels, 'add');
   };
